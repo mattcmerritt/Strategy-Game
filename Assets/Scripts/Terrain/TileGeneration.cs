@@ -30,9 +30,11 @@ public class TileGeneration : MonoBehaviour
     [SerializeField] private TerrainType[] TerrainTypes;
     [SerializeField] private float HeightMultiplier;
     [SerializeField] private TerrainWave[] Waves;
+    [SerializeField] private bool FinishedGenerating;
 
     private void Start()
     {
+        FinishedGenerating = false;
         GenerateTile();
     }
 
@@ -51,6 +53,8 @@ public class TileGeneration : MonoBehaviour
         MeshRenderer.material.mainTexture = tileTexture;
 
         UpdateMeshVertices(heightMap);
+
+        FinishedGenerating = true;
     }
 
     public float[,] GenerateNoiseMap(int mapDepth, int mapWidth, float scale, float offsetX, float offsetZ, TerrainWave[] waves)
@@ -153,5 +157,10 @@ public class TileGeneration : MonoBehaviour
     public float GetMapHeight()
     {
         return HeightMultiplier;
+    }
+
+    public bool GetFinishedGenerating()
+    {
+        return FinishedGenerating;
     }
 }

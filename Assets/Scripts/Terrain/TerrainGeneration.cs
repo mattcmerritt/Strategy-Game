@@ -7,13 +7,24 @@ using UnityEngine;
 
 public class TerrainGeneration : MonoBehaviour
 {
-    [SerializeField] private int MapWidthInTiles, MapDepthInTiles;
-    [SerializeField] private GameObject TilePrefab;
+    [SerializeField] private int MapWidthInTiles, MapDepthInTiles, NumBuildings;
+    [SerializeField] private GameObject TilePrefab, BuildingPrefab, TreePrefab;
     [SerializeField] private bool RandomSeed;
+    [SerializeField] List<GameObject> Tiles, Buildings;
 
     private void Start()
     {
+        Tiles = new List<GameObject>();
+        Buildings = new List<GameObject>();
         GenerateMap();
+    }
+
+    private void Update()
+    {
+        if(Buildings.Count < NumBuildings)
+        {
+            PlaceBuilding();
+        }
     }
 
     private void GenerateMap()
@@ -35,7 +46,27 @@ public class TerrainGeneration : MonoBehaviour
             {
                 Vector3 tilePosition = new Vector3(transform.position.x + xTileIndex * tileWidth, transform.position.y, transform.position.z + zTileIndex * tileDepth);
                 GameObject tile = Instantiate(TilePrefab, tilePosition, Quaternion.identity);
+                Tiles.Add(tile);
             }
+        }
+    }
+
+    private void PlaceBuilding()
+    {
+        // pick tile to spawn building on
+        int buildingSpawnTileX = Random.Range(0, MapWidthInTiles);
+        int buildingSpawnTileZ = Random.Range(0, MapDepthInTiles);
+        int buildingSpawnTileIndex = buildingSpawnTileX * MapWidthInTiles + buildingSpawnTileZ;
+
+        // if the tile is fully generated, place the building above it
+        if((Tiles[buildingSpawnTileIndex].GetComponent<TileGeneration>() != null && (Tiles[buildingSpawnTileIndex].GetComponent<TileGeneration>().GetFinishedGenerating())))
+        {
+            GameObject bld = Instantiate(BuildingPrefab);
+            Vector3[] vertices = Tiles[buildingSpawnTileIndex].GetComponent<MeshFilter>().mesh.vertices;
+            Debug.Log(Tiles.Count);
+            int buildingSpawnVertexIndex = Random.Range(0, vertices.Length);
+            bld.transform.position = vertices[buildingSpawnVertexIndex] + Tiles[buildingSpawnTileIndex].transform.position + new Vector3(0, 3f, 0);
+            Buildings.Add(bld);
         }
     }
 

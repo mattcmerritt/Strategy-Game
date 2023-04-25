@@ -332,8 +332,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapWidthInTiles: 30
   MapDepthInTiles: 30
+  NumBuildings: 3
   TilePrefab: {fileID: 4403666559511241037, guid: 1874b7e988847614da2d1a1a912943b1, type: 3}
+  BuildingPrefab: {fileID: 6412138319698703343, guid: 1ff5fc2c68aafe64fadf9a95ad36e27e, type: 3}
+  TreePrefab: {fileID: 0}
   RandomSeed: 1
+  Tiles: []
+  Buildings: []
 --- !u!4 &1035787721
 Transform:
   m_ObjectHideFlags: 0
