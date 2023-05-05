@@ -346,13 +346,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapWidthInTiles: 2
   MapDepthInTiles: 2
-  NumBuildings: 0
+  NumBuildings: 1
+  NumTrees: 1
+  NumWorkers: 1
   TilePrefab: {fileID: 4403666559511241037, guid: 1874b7e988847614da2d1a1a912943b1, type: 3}
   BuildingPrefab: {fileID: 6412138319698703343, guid: 1ff5fc2c68aafe64fadf9a95ad36e27e, type: 3}
-  TreePrefab: {fileID: 0}
+  TreePrefab: {fileID: 9037182102661350406, guid: b4c54844b5303f4449b4cfa60a1959ed, type: 3}
+  WorkerPrefab: {fileID: 5097152427794499219, guid: 2746e074f0b33df44bf9a49e976a23a1, type: 3}
   RandomSeed: 1
   Tiles: []
   Buildings: []
+  Trees: []
+  Workers: []
 --- !u!4 &1035787721
 Transform:
   m_ObjectHideFlags: 0

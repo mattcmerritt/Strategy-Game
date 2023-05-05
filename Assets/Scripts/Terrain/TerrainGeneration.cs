@@ -7,10 +7,10 @@ using UnityEngine;
 
 public class TerrainGeneration : MonoBehaviour
 {
-    [SerializeField] private int MapWidthInTiles, MapDepthInTiles, NumBuildings;
-    [SerializeField] private GameObject TilePrefab, BuildingPrefab, TreePrefab;
+    [SerializeField] private int MapWidthInTiles, MapDepthInTiles, NumBuildings, NumTrees, NumWorkers;
+    [SerializeField] private GameObject TilePrefab, BuildingPrefab, TreePrefab, WorkerPrefab;
     [SerializeField] private bool RandomSeed;
-    [SerializeField] List<GameObject> Tiles, Buildings;
+    [SerializeField] List<GameObject> Tiles, Buildings, Trees, Workers;
 
     private void Start()
     {
@@ -24,6 +24,14 @@ public class TerrainGeneration : MonoBehaviour
         if(Buildings.Count < NumBuildings)
         {
             PlaceBuilding();
+        }
+        if(Trees.Count < NumTrees)
+        {
+            PlaceTree();
+        }
+        if(Workers.Count < NumWorkers)
+        {
+            PlaceWorker();
         }
     }
 
@@ -65,8 +73,49 @@ public class TerrainGeneration : MonoBehaviour
             Vector3[] vertices = Tiles[buildingSpawnTileIndex].GetComponent<MeshFilter>().mesh.vertices;
             Debug.Log(Tiles.Count);
             int buildingSpawnVertexIndex = Random.Range(0, vertices.Length);
-            bld.transform.position = vertices[buildingSpawnVertexIndex] + Tiles[buildingSpawnTileIndex].transform.position + new Vector3(0, 3f, 0);
+            bld.transform.position = vertices[buildingSpawnVertexIndex] + Tiles[buildingSpawnTileIndex].transform.position;
             Buildings.Add(bld);
+        }
+    }
+
+    // TODO: they should spawn near the buildings, not randomly - this is just for demo
+    private void PlaceTree()
+    {
+        // pick tile to spawn building on
+        int treeSpawnTileX = Random.Range(0, MapWidthInTiles);
+        int treeSpawnTileZ = Random.Range(0, MapDepthInTiles);
+        int treeSpawnTileIndex = treeSpawnTileX * MapWidthInTiles + treeSpawnTileZ;
+
+        // if the tile is fully generated, place the worker above it
+        if((Tiles[treeSpawnTileIndex].GetComponent<TileGeneration>() != null && (Tiles[treeSpawnTileIndex].GetComponent<TileGeneration>().GetFinishedGenerating())))
+        {
+            GameObject tr = Instantiate(TreePrefab);
+            Vector3[] vertices = Tiles[treeSpawnTileIndex].GetComponent<MeshFilter>().mesh.vertices;
+            Debug.Log(Tiles.Count);
+            int treeSpawnVertexIndex = Random.Range(0, vertices.Length);
+            tr.transform.position = vertices[treeSpawnVertexIndex] + Tiles[treeSpawnTileIndex].transform.position;
+            Trees.Add(tr);
+        }
+    }
+
+    // TODO: they should spawn near the buildings, not randomly - this is just for demo
+    // TODO: fix the vertical displacement - shouldn't be airborne
+    private void PlaceWorker()
+    {
+        // pick tile to spawn building on
+        int workerSpawnTileX = Random.Range(0, MapWidthInTiles);
+        int workerSpawnTileZ = Random.Range(0, MapDepthInTiles);
+        int workerSpawnTileIndex = workerSpawnTileX * MapWidthInTiles + workerSpawnTileZ;
+
+        // if the tile is fully generated, place the worker above it
+        if((Tiles[workerSpawnTileIndex].GetComponent<TileGeneration>() != null && (Tiles[workerSpawnTileIndex].GetComponent<TileGeneration>().GetFinishedGenerating())))
+        {
+            GameObject wrk = Instantiate(WorkerPrefab);
+            Vector3[] vertices = Tiles[workerSpawnTileIndex].GetComponent<MeshFilter>().mesh.vertices;
+            Debug.Log(Tiles.Count);
+            int workerSpawnVertexIndex = Random.Range(0, vertices.Length);
+            wrk.transform.position = vertices[workerSpawnVertexIndex] + Tiles[workerSpawnTileIndex].transform.position + new Vector3(0, 1f, 0);
+            Workers.Add(wrk);
         }
     }
 
