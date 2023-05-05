@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.AI.Navigation;
 
 // Code based on example from class (https://github.com/greggddqu/ProceduralGenExs/blob/main/Assets/Scripts/MyTileGeneration.cs)
 // Also based on tutorial provided in class example (https://gamedevacademy.org/complete-guide-to-procedural-level-generation-in-unity-part-1/)
@@ -31,11 +32,23 @@ public class TileGeneration : MonoBehaviour
     [SerializeField] private float HeightMultiplier;
     [SerializeField] private TerrainWave[] Waves;
     [SerializeField] private bool FinishedGenerating;
+    [SerializeField] private float StepLayer;
+
+    // Dynamic nav mesh gen
+    [SerializeField] private NavMeshSurface surface;
 
     private void Start()
     {
         FinishedGenerating = false;
         GenerateTile();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            surface.BuildNavMesh();
+        }
     }
 
     private void GenerateTile()
@@ -135,7 +148,7 @@ public class TileGeneration : MonoBehaviour
             {
                 float height = heightMap[zIndex, xIndex];
                 Vector3 vertex = meshVertices[vertexIndex];
-                meshVertices[vertexIndex] = new Vector3(vertex.x, Mathf.Floor(height * HeightMultiplier), vertex.z);
+                meshVertices[vertexIndex] = new Vector3(vertex.x, Mathf.Floor(height * HeightMultiplier) * StepLayer, vertex.z);
                 vertexIndex++;
             }
         }

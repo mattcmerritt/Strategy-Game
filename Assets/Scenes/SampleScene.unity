@@ -330,9 +330,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1aaa4046938d374ab5a98f2d443e312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapWidthInTiles: 30
-  MapDepthInTiles: 30
-  NumBuildings: 3
+  MapWidthInTiles: 2
+  MapDepthInTiles: 2
+  NumBuildings: 0
   TilePrefab: {fileID: 4403666559511241037, guid: 1874b7e988847614da2d1a1a912943b1, type: 3}
   BuildingPrefab: {fileID: 6412138319698703343, guid: 1ff5fc2c68aafe64fadf9a95ad36e27e, type: 3}
   TreePrefab: {fileID: 0}
