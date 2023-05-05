@@ -12,7 +12,7 @@ public class ResourceManager : MonoBehaviour
     public void AddResources(int additional)
     {
         ResourcesCollected += additional;
-        Collected.text = "" + ResourcesCollected;
+        // Collected.text = "" + ResourcesCollected;
     }
 
     public bool HasMetResourceGoal()
@@ -23,12 +23,12 @@ public class ResourceManager : MonoBehaviour
     public void IncrementResourceGoal()
     {
         ResourceGoal += 5;
-        Target.text = "" + ResourceGoal;
+        // Target.text = "" + ResourceGoal;
     }
 
     public void DeccrementResourceGoal()
     {
         ResourceGoal -= 5;
-        Target.text = "" + ResourceGoal;
+        // Target.text = "" + ResourceGoal;
     }
 }
