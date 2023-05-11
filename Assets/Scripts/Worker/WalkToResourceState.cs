@@ -6,6 +6,11 @@ public class WalkToResourceState : AgentState
 {
     private ResourceSource Resource;
 
+    public WalkToResourceState(Agent agent)
+    {
+        Resource = ((Worker)agent).GetFocus();
+    }
+
     public WalkToResourceState(ResourceSource resource)
     {
         Resource = resource;
@@ -13,6 +18,9 @@ public class WalkToResourceState : AgentState
 
     public override void ActivateState(Agent agent)
     {
+        // Set focus to the current resource
+        ((Worker)agent).SetFocus(Resource);
+
         // if nothing is left, return home
         if (Resource != null)
         {

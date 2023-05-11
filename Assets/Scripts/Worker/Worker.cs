@@ -8,6 +8,7 @@ public class Worker : Agent
     [SerializeField] private Vector3 HomePosition;
     [SerializeField] private bool IsGuarded = false;
     [SerializeField] private bool IsScared = false;
+    [SerializeField] private ResourceSource CurrentFocus;
 
     // Visual representation of inventory
     [SerializeField] private List<GameObject> LogsCollected;
@@ -82,6 +83,12 @@ public class Worker : Agent
         return HomePosition;
     }
 
+    // Helper method to set new home position (where to stand still at next)
+    public void SetHomePosition(Vector3 pos)
+    {
+        HomePosition = pos;
+    }
+
     // Helper method for guarding and preventing too many guards from following one worker
     public void StartGuarding()
     {
@@ -127,5 +134,17 @@ public class Worker : Agent
     public void CalmDown()
     {
         IsScared = false;
+    }
+
+    // Helper for getting current focused resource source
+    public ResourceSource GetFocus()
+    {
+        return CurrentFocus;
+    }
+
+    // Helper for setting current focused resource source
+    public void SetFocus(ResourceSource resource)
+    {
+        CurrentFocus = resource;
     }
 }

@@ -12,17 +12,8 @@ public class WorkerIdleState : AgentState
 
     public override void Update(Agent agent)
     {
-        // Do nothing unless the resource goal is not met
-        // If it is not met, go get more resources
-        ResourceManager resManager = GameObject.FindObjectOfType<ResourceManager>();
-        if (!resManager.HasMetResourceGoal())
-        {
-            ResourceSource closest = ((Worker)agent).FindClosestResource();
-            if (closest != null)
-            {
-                agent.ChangeState(new WalkToResourceState(closest));
-            }
-        }
+        // Should stay in idle forever unless externally commanded
+        // See UnitSelector.cs
     }
 
     public override void OnTriggerEnter(Agent agent, Collider other)
