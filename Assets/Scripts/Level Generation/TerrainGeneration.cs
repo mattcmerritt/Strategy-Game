@@ -1,19 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.AI.Navigation;
 
 // Procedurally generates the terrain on a single mesh
 // Using the tiles would cause issues with the NavMesh not spawning correctly
 // Additionally, the NavMesh had strange issues on the edges of tiles
-
-
 
 public class TerrainGeneration : MonoBehaviour
 {
     [SerializeField] private int width, depth; // Number of squares in the mesh
     private Vector3[] vertices; // Vertices for our mesh
     private float[] heightMap; // heights of the tiles
-    [SerializeField] private float heightLayers; // vertical span of the map
+    [SerializeField] private float heightLayers; // number of vertical slices in the map
+    [SerializeField] private float layerHeight; // height of a single layer
     [SerializeField] private float mapScale; // scale applied to perlin noise function
 
     private void Start()
@@ -54,7 +54,7 @@ public class TerrainGeneration : MonoBehaviour
         {
             for (int x = 0; x <= width; x++, vertex++)
             {
-                vertices[vertex] = new Vector3(x, heightMap[x + z * width], z);
+                vertices[vertex] = new Vector3(x, heightMap[x + z * width] * layerHeight, z);
                 uv[vertex] = new Vector2((float) x / width, (float) z / depth);
                 tangents[vertex] = tangent;
             }
@@ -82,5 +82,9 @@ public class TerrainGeneration : MonoBehaviour
         }
         meshFilter.mesh.triangles = triangles;
         meshFilter.mesh.RecalculateNormals();
+
+        // Generating the NavMesh
+        NavMeshSurface surface = GetComponent<NavMeshSurface>();
+        surface.BuildNavMesh();
     }
 }
