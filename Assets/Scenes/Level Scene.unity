@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 890227017}
   - component: {fileID: 890227015}
   - component: {fileID: 890227020}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,15 @@ MonoBehaviour:
   depth: 100
   heightLayers: 3
   layerHeight: 1
+  squareSize: 1
   mapScale: 10
+  villageRadius: 20
+  numBuildings: 7
+  buildingPrefab: {fileID: 3061463002227722825, guid: ffd1c1eaae898f948828c518522f254d, type: 3}
+  floorLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  markerPrefab: {fileID: 2458587008034946902, guid: 964b211ca9500c84c8ba374ae0d94306, type: 3}
 --- !u!4 &890227016
 Transform:
   m_ObjectHideFlags: 0
