@@ -47,7 +47,8 @@ public class TerrainGeneration : MonoBehaviour
     [SerializeField] private int numBerryBushesInVillage; // determines how many of the bushes start close to the player
 
     // Box casts
-    private List<Vector3> locations = new List<Vector3>(), extents = new List<Vector3>();
+    private List<Vector3> locations = new List<Vector3>(), extents = new List<Vector3>(); // debug only
+    private float CenterGap = 3f; // gap in the center of the map to let units spaw
 
     private void Start()
     {
@@ -146,7 +147,7 @@ public class TerrainGeneration : MonoBehaviour
             {
                 // calculate where to put the building
                 Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
-                Vector3 displacement = direction * Random.Range(0f, villageBuildingRadius);
+                Vector3 displacement = direction * Random.Range(CenterGap, villageBuildingRadius);
 
                 Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
                 Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a house, less the vertical component
@@ -207,7 +208,7 @@ public class TerrainGeneration : MonoBehaviour
             {
                 // calculate where to put the building
                 Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
-                Vector3 displacement = direction * Random.Range(0f, villageBuildingRadius);
+                Vector3 displacement = direction * Random.Range(CenterGap, villageBuildingRadius);
 
                 Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
                 Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a house, less the vertical component
@@ -268,7 +269,7 @@ public class TerrainGeneration : MonoBehaviour
             {
                 // calculate where to put the tree
                 Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
-                Vector3 displacement = direction * Random.Range(i <= numTreesInVillage ? 0f : villageForestRadius, i <= numTreesInVillage ? villageForestRadius : width * squareSize / 2);
+                Vector3 displacement = direction * Random.Range(i <= numTreesInVillage ? CenterGap : villageForestRadius, i <= numTreesInVillage ? villageForestRadius : width * squareSize / 2);
 
                 Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
                 Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a tree, less the vertical component
@@ -329,7 +330,7 @@ public class TerrainGeneration : MonoBehaviour
             {
                 // calculate where to put the bush
                 Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
-                Vector3 displacement = direction * Random.Range(i <= numBerryBushesInVillage ? 0f : villageForestRadius, i <= numBerryBushesInVillage ? villageForestRadius : width * squareSize / 2);
+                Vector3 displacement = direction * Random.Range(i <= numBerryBushesInVillage ? CenterGap : villageForestRadius, i <= numBerryBushesInVillage ? villageForestRadius : width * squareSize / 2);
 
                 Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
                 Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a bush, less the vertical component
@@ -390,7 +391,7 @@ public class TerrainGeneration : MonoBehaviour
             {
                 // calculate where to put the worker
                 Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
-                Vector3 displacement = direction * Random.Range(0f, villageBuildingRadius);
+                Vector3 displacement = direction * Random.Range(CenterGap, villageBuildingRadius);
 
                 Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
                 Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a worker, less the vertical component
@@ -463,6 +464,12 @@ public class TerrainGeneration : MonoBehaviour
     public float GetSquareSize()
     {
         return squareSize;
+    }
+
+    // Helper method to get the center of the map
+    public Vector3 GetCenter()
+    {
+        return transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
     }
 
     /*

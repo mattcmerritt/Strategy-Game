@@ -109,7 +109,8 @@ public class UnitSelector : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("here");
+            UI ui = FindObjectOfType<UI>();
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~DetectLayer))
@@ -120,6 +121,14 @@ public class UnitSelector : MonoBehaviour
                     Select(hit.collider.gameObject);
                 }
                 else if(hit.collider.gameObject.GetComponent<Archer>() != null)
+                {
+                    Select(hit.collider.gameObject);
+                }
+                else if (hit.collider.gameObject.GetComponent<House>() != null)
+                {
+                    Select(hit.collider.gameObject);
+                }
+                else if (hit.collider.gameObject.GetComponent<ArcheryRange>() != null)
                 {
                     Select(hit.collider.gameObject);
                 }

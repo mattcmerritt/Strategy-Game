@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class UI : MonoBehaviour
     [SerializeField] private ResourceManager ResourceManager;
 
     [SerializeField] private TMP_Text UnitTitle, UnitDetails;
+    [SerializeField] private GameObject CreateButton;
     [SerializeField] private UnitSelector UnitSelector;
 
     private void Update()
@@ -21,8 +23,8 @@ public class UI : MonoBehaviour
         {
             Worker w = selected.GetComponent<Worker>();
             Archer a = selected.GetComponent<Archer>();
-            // House h = selected.GetComponent<House>();
-            // ArcheryRange ar = selected.GetComponent<ArcheryRange>();
+            House h = selected.GetComponent<House>();
+            ArcheryRange ar = selected.GetComponent<ArcheryRange>();
 
             if (w != null)
             {
@@ -34,11 +36,31 @@ public class UI : MonoBehaviour
                 UnitTitle.text = "Archer";
                 UnitDetails.text = $"Health: {a.GetHealthString()}";
             }
-            else
+            else if (h != null)
             {
-                UnitTitle.text = "Nothing Selected";
-                UnitDetails.text = $"Select a unit or building.";
+                UnitTitle.text = "House";
+                UnitDetails.text = "Can create a worker for 30 food. Press space to create.";
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    h.CreateWorker();
+                }
             }
+            else if (ar != null)
+            {
+                UnitTitle.text = "Archery Range";
+                UnitDetails.text = "Can create an archer for 30 food and 10 wood. Press space to create.";
+                
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    ar.CreateArcher();
+                }
+            }
+        }
+        else
+        {
+            UnitTitle.text = "Nothing Selected";
+            UnitDetails.text = $"Select a unit or building.";
         }
     }
 }

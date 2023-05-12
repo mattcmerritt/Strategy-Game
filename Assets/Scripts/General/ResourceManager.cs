@@ -22,4 +22,9 @@ public class ResourceManager : MonoBehaviour
     {
         return ResourcesCollected[type];
     }
+
+    public void RemoveResource(Resource type, int amount)
+    {
+        ResourcesCollected[type] -= amount;
+    }
 }
