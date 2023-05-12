@@ -202,4 +202,15 @@ public class Worker : Agent
         }
         HeldResources = 0;
     }
+
+    public string GetHealthString()
+    {
+        return $"{CurrentHealth}/{MaxHealth}";
+    }
+
+    public string GetResourcesString()
+    {
+        string type = HeldResourceType == Resource.Wood ? "Wood" : "Food";
+        return $"{HeldResources}/{ResourceCapacity} {type}";
+    }
 }

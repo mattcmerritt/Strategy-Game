@@ -41,4 +41,9 @@ public class Archer : Agent
     {
         return Projectile;
     }
+
+    public string GetHealthString()
+    {
+        return $"{CurrentHealth}/{MaxHealth}";
+    }
 }

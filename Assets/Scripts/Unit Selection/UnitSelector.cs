@@ -146,4 +146,9 @@ public class UnitSelector : MonoBehaviour
             CurrentSelectedObject.GetComponent<MeshRenderer>().material = SelectedMaterial;
         }
     }
+
+    public GameObject GetSelectedObject()
+    {
+        return CurrentSelectedObject;
+    }
 }

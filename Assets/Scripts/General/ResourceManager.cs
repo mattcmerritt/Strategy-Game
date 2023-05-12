@@ -17,4 +17,9 @@ public class ResourceManager : MonoBehaviour
     {
         ResourcesCollected[type] += additional;
     }
+
+    public int GetResourceStockpile(Resource type)
+    {
+        return ResourcesCollected[type];
+    }
 }
