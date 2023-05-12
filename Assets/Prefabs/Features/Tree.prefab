@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3261879618593082449}
   - component: {fileID: 4287506514319945942}
   - component: {fileID: 8055417414142918553}
+  - component: {fileID: 4220200882444571404}
   m_Layer: 0
   m_Name: Trunk
   m_TagString: Untagged
@@ -98,6 +99,22 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &4220200882444571404
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3697829821028315961}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &4231932171196807530
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,6 +127,7 @@ GameObject:
   - component: {fileID: 2701527661011881012}
   - component: {fileID: 6264477327196080281}
   - component: {fileID: 8375775429469911359}
+  - component: {fileID: 5547963889416256431}
   m_Layer: 0
   m_Name: Leaf
   m_TagString: Untagged
@@ -195,6 +213,22 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &5547963889416256431
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4231932171196807530}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &6197465335216634869
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,6 +241,7 @@ GameObject:
   - component: {fileID: 6253763280043679854}
   - component: {fileID: 4583844033815891093}
   - component: {fileID: 6167368478503362552}
+  - component: {fileID: 4599744491389267374}
   m_Layer: 0
   m_Name: Leaf
   m_TagString: Untagged
@@ -293,6 +328,22 @@ CapsuleCollider:
   m_Height: 2.0000005
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &4599744491389267374
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6197465335216634869}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &6324894276825309404
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +356,7 @@ GameObject:
   - component: {fileID: 1722059735037049364}
   - component: {fileID: 7701983378478791501}
   - component: {fileID: 6092436412222528636}
+  - component: {fileID: 2387310435819943786}
   m_Layer: 0
   m_Name: Leaf
   m_TagString: Untagged
@@ -391,6 +443,22 @@ CapsuleCollider:
   m_Height: 2.0000005
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &2387310435819943786
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6324894276825309404}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &9037182102661350406
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,7 +534,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9037182102661350406}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.5
   m_Height: 6

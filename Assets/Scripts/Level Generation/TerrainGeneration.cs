@@ -112,10 +112,6 @@ public class TerrainGeneration : MonoBehaviour
         meshFilter.mesh.triangles = triangles;
         meshFilter.mesh.RecalculateNormals();
 
-        // Generating the NavMesh
-        NavMeshSurface surface = GetComponent<NavMeshSurface>();
-        surface.BuildNavMesh();
-
         // Generating the collider
         MeshCollider collider = GetComponent<MeshCollider>();
         collider.sharedMesh = meshFilter.sharedMesh;
@@ -304,6 +300,10 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
+
+        // Generating the NavMesh
+        NavMeshSurface surface = GetComponent<NavMeshSurface>();
+        surface.BuildNavMesh();
     }
 
     /*
