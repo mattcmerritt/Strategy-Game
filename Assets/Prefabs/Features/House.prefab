@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3061463002227722871}
   - component: {fileID: 3061463002227722824}
   - component: {fileID: 9032483070940407888}
+  - component: {fileID: 2958231673563345181}
   m_Layer: 0
   m_Name: House
   m_TagString: Untagged
@@ -114,3 +115,15 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &2958231673563345181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3061463002227722825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e47567ff70939e04fbd5445fe926cee4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

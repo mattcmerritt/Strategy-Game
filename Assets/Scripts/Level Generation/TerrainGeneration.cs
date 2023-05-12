@@ -313,6 +313,19 @@ public class TerrainGeneration : MonoBehaviour
         }
     }
 
+    // returns the y-value of the floor at a given point, used to place things on the map at runtime
+    public float FindHeightAtLocation(Vector3 position)
+    {
+        if (Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + position, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer))
+        {
+            return hit.point.y;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
     /*
     // Output all collisions to check for misplaced elements
     private void Update()

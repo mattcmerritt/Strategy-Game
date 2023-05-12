@@ -44,6 +44,26 @@ public class Worker : Agent
         return closest;
     }
 
+    // Helper method to find the closest tree
+    public Building FindClosestBuilding()
+    {
+        // Find the closest tree
+        Building[] buildings = FindObjectsOfType<Building>();
+        float distanceToClosest = Mathf.Infinity;
+        Building closest = null;
+        foreach (Building building in buildings)
+        {
+            float distanceToBuilding = Vector3.Magnitude(building.transform.position - transform.position);
+            if (distanceToBuilding <= distanceToClosest)
+            {
+                closest = building;
+                distanceToClosest = distanceToBuilding;
+            }
+        }
+
+        return closest;
+    }
+
     // Helper method to check if the worker can pick up more
     public bool CanHoldMoreResources()
     {
