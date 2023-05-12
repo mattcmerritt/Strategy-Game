@@ -67,7 +67,7 @@ public class Archer : Agent
     {
         // Adding resources to totals
         ResourceManager resManager = FindObjectOfType<ResourceManager>();
-        resManager.AddResources(HeldResources);
+        // resManager.AddResources(HeldResources);
 
         HeldResources = 0;
 

@@ -5,11 +5,13 @@ using UnityEngine;
 public class Worker : Agent
 {
     [SerializeField] private int HeldResources = 0, ResourceCapacity = 5;
+    [SerializeField] private Resource HeldResourceType;
     [SerializeField] private Vector3 HomePosition;
     [SerializeField] private ResourceSource CurrentFocus;
 
     // Visual representation of inventory
     [SerializeField] private List<GameObject> LogsCollected;
+    [SerializeField] private List<GameObject> BerriesCollected;
     [SerializeField] private int CurrentHealth, MaxHealth = 5;
 
     // Start by idling
@@ -70,15 +72,55 @@ public class Worker : Agent
         return HeldResources < ResourceCapacity;
     }
 
+    // Helper method to swap to a start gathering a type of resource
+    public void StartGatheringResource(Resource resourceType)
+    {
+        // if you try to gather a different type of resource than what you are holding, throw away the old resources
+        if (resourceType != HeldResourceType)
+        {
+            HeldResources = 0;
+
+            if (HeldResourceType == Resource.Wood)
+            {
+                // Hide the logs from the player
+                for (int i = 0; i < LogsCollected.Count; i++)
+                {
+                    LogsCollected[i].SetActive(false);
+                }
+            }
+            // Show the berries to the player
+            if (HeldResourceType == Resource.Food)
+            {
+                for (int i = 0; i < HeldResources; i++)
+                {
+                    BerriesCollected[i].SetActive(true);
+                }
+            }
+        }
+
+        HeldResourceType = resourceType;
+    }
+
     // Helper method to pick a single resource
     public void PickUpResource()
     {
         HeldResources += 1;
 
         // Show the logs to the player
-        for (int i = 0; i < HeldResources; i++)
+        if (HeldResourceType == Resource.Wood)
         {
-            LogsCollected[i].SetActive(true);
+            for (int i = 0; i < HeldResources; i++)
+            {
+                LogsCollected[i].SetActive(true);
+            }
+        }
+        // Show the berries to the player
+        else if (HeldResourceType == Resource.Food)
+        {
+            for (int i = 0; i < HeldResources; i++)
+            {
+                BerriesCollected[i].SetActive(true);
+            }
         }
     }
 
@@ -87,14 +129,25 @@ public class Worker : Agent
     {
         // Adding resources to totals
         ResourceManager resManager = FindObjectOfType<ResourceManager>();
-        resManager.AddResources(HeldResources);
+        resManager.AddResources(HeldResourceType, HeldResources);
 
         HeldResources = 0;
 
         // Hide the logs from the player
-        for (int i = 0; i < LogsCollected.Count; i++)
+        if (HeldResourceType == Resource.Wood)
         {
-            LogsCollected[i].SetActive(false);
+            for (int i = 0; i < LogsCollected.Count; i++)
+            {
+                LogsCollected[i].SetActive(false);
+            }
+        }
+        // Hide the berries from the player
+        else if (HeldResourceType == Resource.Food)
+        {
+            for (int i = 0; i < BerriesCollected.Count; i++)
+            {
+                BerriesCollected[i].SetActive(false);
+            }
         }
     }
 
@@ -132,9 +185,20 @@ public class Worker : Agent
             Destroy(this.gameObject);
         }
         // Hide the logs from the player
-        for (int i = 0; i < LogsCollected.Count; i++)
+        if (HeldResourceType == Resource.Wood)
         {
-            LogsCollected[i].SetActive(false);
+            for (int i = 0; i < LogsCollected.Count; i++)
+            {
+                LogsCollected[i].SetActive(false);
+            }
+        }
+        // Hide the berries from the player
+        else if (HeldResourceType == Resource.Food)
+        {
+            for (int i = 0; i < BerriesCollected.Count; i++)
+            {
+                BerriesCollected[i].SetActive(false);
+            }
         }
         HeldResources = 0;
     }
