@@ -279,7 +279,7 @@ MonoBehaviour:
   layerHeight: 0.75
   squareSize: 1
   mapScale: 10
-  villageRadius: 20
+  villageBuildingRadius: 20
   numBuildings: 7
   buildingPrefab: {fileID: 3061463002227722825, guid: ffd1c1eaae898f948828c518522f254d, type: 3}
   floorLayer:
@@ -288,8 +288,9 @@ MonoBehaviour:
   markerPrefab: {fileID: 2458587008034946902, guid: 964b211ca9500c84c8ba374ae0d94306, type: 3}
   workerPrefab: {fileID: 5097152427794499219, guid: 2746e074f0b33df44bf9a49e976a23a1, type: 3}
   numWorkers: 2
+  villageTreeRadius: 30
   treePrefab: {fileID: 9037182102661350406, guid: b4c54844b5303f4449b4cfa60a1959ed, type: 3}
-  numTrees: 3
+  numTrees: 150
   numTreesInVillage: 3
 --- !u!4 &890227016
 Transform:
