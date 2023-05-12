@@ -338,10 +338,13 @@ MonoBehaviour:
   markerPrefab: {fileID: 2458587008034946902, guid: 964b211ca9500c84c8ba374ae0d94306, type: 3}
   workerPrefab: {fileID: 5097152427794499219, guid: 2746e074f0b33df44bf9a49e976a23a1, type: 3}
   numWorkers: 2
-  villageTreeRadius: 30
+  villageForestRadius: 30
   treePrefab: {fileID: 9037182102661350406, guid: b4c54844b5303f4449b4cfa60a1959ed, type: 3}
   numTrees: 150
   numTreesInVillage: 3
+  berryBushPrefab: {fileID: 95898126312138022, guid: 317553fb6930a534f98666cdb455b96d, type: 3}
+  numBerryBushes: 30
+  numBerryBushesInVillage: 5
 --- !u!4 &890227016
 Transform:
   m_ObjectHideFlags: 0
@@ -574,10 +577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53b1d71c9929136428b3502f522bf448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceGoal: 100
-  ResourcesCollected: 0
-  Collected: {fileID: 0}
-  Target: {fileID: 0}
 --- !u!4 &2011907820
 Transform:
   m_ObjectHideFlags: 0
