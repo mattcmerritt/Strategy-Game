@@ -7,6 +7,7 @@ public class Archer : Agent
     [SerializeField] private int CurrentHealth, MaxHealth = 5;
     [SerializeField] private Enemy Target;
     [SerializeField] private GameObject Projectile;
+    [SerializeField] private Vector3 NewPosition;
 
     // Start by idling
     private void Start()
@@ -45,5 +46,15 @@ public class Archer : Agent
     public string GetHealthString()
     {
         return $"{CurrentHealth}/{MaxHealth}";
+    }
+
+    public Vector3 GetNewPosition()
+    {
+        return NewPosition;
+    }
+
+    public void SetNewPosition(Vector3 pos)
+    {
+        NewPosition = pos;
     }
 }

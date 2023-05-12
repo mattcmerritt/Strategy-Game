@@ -95,13 +95,16 @@ public class UnitSelector : MonoBehaviour
                     // Attack a specific enemy that was clicked on
                     else if(hit.collider.gameObject.GetComponent<Enemy>() != null)
                     {
-
+                        archer.SetTarget(hit.collider.gameObject.GetComponent<Enemy>());
+                        ArcherAttackState assignedTask = new ArcherAttackState();
+                        archer.ChangeState(assignedTask);
                     }
                     // If nothing interesting was hit, move to position clicked
                     else
                     {
                         Vector3 newPos = new Vector3(hit.point.x, archer.transform.position.y, hit.point.z);
-                        agent.SetDestination(newPos);
+                        archer.SetNewPosition(newPos);
+                        archer.ChangeState(new ArcherRepositionState());
                     }
                 }
             }
