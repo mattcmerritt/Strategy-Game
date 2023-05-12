@@ -10,6 +10,7 @@ public class Worker : Agent
 
     // Visual representation of inventory
     [SerializeField] private List<GameObject> LogsCollected;
+    [SerializeField] private int CurrentHealth, MaxHealth = 5;
 
     // Start by idling
     private void Start()
@@ -19,6 +20,8 @@ public class Worker : Agent
 
         // Create new idle state
         ChangeState(new WorkerIdleState());
+
+        CurrentHealth = MaxHealth;
     }
 
     // Helper method to find the closest tree
@@ -97,5 +100,22 @@ public class Worker : Agent
     public void SetFocus(ResourceSource resource)
     {
         CurrentFocus = resource;
+    }
+
+    public void TakeDamage()
+    {
+        // Take damage, check if dead, drop the logs, and return to the building
+        CurrentHealth--;
+        ChangeState(new WorkerReturnToHomeState());
+        if(CurrentHealth <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+        // Hide the logs from the player
+        for (int i = 0; i < LogsCollected.Count; i++)
+        {
+            LogsCollected[i].SetActive(false);
+        }
+        HeldResources = 0;
     }
 }
