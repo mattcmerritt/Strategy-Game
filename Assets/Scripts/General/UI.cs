@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField] private TMP_Text WoodStockpile, FoodStockpile;
+    [SerializeField] private TMP_Text WoodStockpile, FoodStockpile, EnemiesDefeated;
     [SerializeField] private ResourceManager ResourceManager;
 
     [SerializeField] private TMP_Text UnitTitle, UnitDetails;
@@ -17,6 +17,7 @@ public class UI : MonoBehaviour
     {
         WoodStockpile.text = $"Wood Stockpile: {ResourceManager.GetResourceStockpile(Resource.Wood)}";
         FoodStockpile.text = $"Food Stockpile: {ResourceManager.GetResourceStockpile(Resource.Food)}";
+        EnemiesDefeated.text = $"Enemies Defeated: {Enemy.DeathCount}";
 
         GameObject selected = UnitSelector.GetSelectedObject();
         if (selected != null)

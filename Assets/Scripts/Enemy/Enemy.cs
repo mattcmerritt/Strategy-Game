@@ -8,6 +8,8 @@ public class Enemy : Agent
     [SerializeField] private GameObject Projectile;
     [SerializeField] private float MinDistance;
     [SerializeField] private int CurrentHealth, MaxHealth = 2;
+    public static int DeathCount = 0;
+
     // Start by idling
     private void Start()
     {
@@ -22,6 +24,7 @@ public class Enemy : Agent
         CurrentHealth--;
         if(CurrentHealth <= 0)
         {
+            DeathCount++;
             Destroy(this.gameObject);
         }
     }
