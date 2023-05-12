@@ -18,6 +18,14 @@ public class Projectile : MonoBehaviour
         {
             other.gameObject.GetComponent<Worker>().TakeDamage();
         }
+        else if(other.gameObject.GetComponent<Archer>() != null)
+        {
+            other.gameObject.GetComponent<Archer>().TakeDamage();
+        }
+        else if(other.gameObject.GetComponent<Enemy>() != null)
+        {
+            other.gameObject.GetComponent<Enemy>().TakeDamage();
+        }
         Destroy(this.gameObject);
     }
 }

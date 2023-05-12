@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 3061463002227722871}
   - component: {fileID: 3061463002227722824}
   - component: {fileID: 9032483070940407888}
-  - component: {fileID: 3877668619435288508}
+  - component: {fileID: 684394715562810388}
   - component: {fileID: 5733222133170956298}
   m_Layer: 0
-  m_Name: House
+  m_Name: Range
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5920a259fd72ca04eaa780693d2a93bd, type: 2}
+  - {fileID: 2100000, guid: adc46517891929d469e4fccc85c53e68, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,7 +116,7 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &3877668619435288508
+--- !u!114 &684394715562810388
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,10 +125,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3061463002227722825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1a120b8f3ce37941af6be1930979925, type: 3}
+  m_Script: {fileID: 11500000, guid: e47567ff70939e04fbd5445fe926cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WorkerPrefab: {fileID: 5097152427794499219, guid: 2746e074f0b33df44bf9a49e976a23a1, type: 3}
+  ArcherPrefab: {fileID: 5097152427794499219, guid: 55b4994c56beb6948a22ade5d57ff418, type: 3}
 --- !u!114 &5733222133170956298
 MonoBehaviour:
   m_ObjectHideFlags: 0

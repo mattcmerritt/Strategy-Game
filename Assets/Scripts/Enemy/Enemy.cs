@@ -7,11 +7,23 @@ public class Enemy : Agent
     [SerializeField] private Worker Target;
     [SerializeField] private GameObject Projectile;
     [SerializeField] private float MinDistance;
+    [SerializeField] private int CurrentHealth, MaxHealth = 2;
     // Start by idling
     private void Start()
     {
         // Create new idle state
         ChangeState(new EnemyIdleState());
+        CurrentHealth = MaxHealth;
+    }
+
+    public void TakeDamage()
+    {
+        // Take damage, check if dead
+        CurrentHealth--;
+        if(CurrentHealth <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     // Helper method to find the closest tree

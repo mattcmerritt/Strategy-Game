@@ -33,7 +33,6 @@ public class UnitSelector : MonoBehaviour
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-                Debug.Log("ray.origin " + ray.origin + " ray.direction " + ray.direction);
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~DetectLayer))
                 {
                     // If a resource was clicked, start gathering resources
@@ -41,6 +40,13 @@ public class UnitSelector : MonoBehaviour
                     {
                         // Set home to nearest building position so that we drop off the resources
                         WalkToResourceState assignedTask = new WalkToResourceState(hit.collider.gameObject.GetComponent<ResourceSource>());
+                        worker.ChangeState(assignedTask);
+                    }
+                    // Turn worker into an archer if the range was clicked
+                    else if(hit.collider.gameObject.GetComponent<ArcheryRange>() != null)
+                    {
+                        // TODO: add cost
+                        WalkToRangeState assignedTask = new WalkToRangeState(hit.collider.gameObject.GetComponent<ArcheryRange>());
                         worker.ChangeState(assignedTask);
                     }
                     // If nothing interesting was hit, move to position clicked
@@ -55,6 +61,52 @@ public class UnitSelector : MonoBehaviour
             }
         }
 
+        // Archer behavior
+        if(CurrentSelectedObject != null && CurrentSelectedObject.GetComponent<Archer>() != null)
+        {
+            Archer archer = CurrentSelectedObject.GetComponent<Archer>();
+            NavMeshAgent agent = CurrentSelectedObject.GetComponent<NavMeshAgent>();
+            LineRenderer line = CurrentSelectedObject.GetComponent<LineRenderer>();
+
+            // draw path line
+            Vector3[] lineWaypoints = agent.path.corners;
+            if(lineWaypoints != null && lineWaypoints.Length > 1)
+            {
+                line.positionCount = lineWaypoints.Length;
+                for (int i = 0; i < lineWaypoints.Length; i++)
+                {
+                    line.SetPosition(i, lineWaypoints[i]);
+                }
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~DetectLayer))
+                {
+                    // Turn archer into an worker if the house was clicked
+                    if(hit.collider.gameObject.GetComponent<House>() != null)
+                    {
+                        // TODO: add cost
+                        WalkToHouseState assignedTask = new WalkToHouseState(hit.collider.gameObject.GetComponent<House>());
+                        archer.ChangeState(assignedTask);
+                    }
+                    // Attack a specific enemy that was clicked on
+                    else if(hit.collider.gameObject.GetComponent<Enemy>() != null)
+                    {
+
+                    }
+                    // If nothing interesting was hit, move to position clicked
+                    else
+                    {
+                        Vector3 newPos = new Vector3(hit.point.x, archer.transform.position.y, hit.point.z);
+                        agent.SetDestination(newPos);
+                    }
+                }
+            }
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("here");
@@ -64,6 +116,10 @@ public class UnitSelector : MonoBehaviour
             {
                 Debug.Log(hit.collider.gameObject.name);
                 if(hit.collider.gameObject.GetComponent<Worker>() != null)
+                {
+                    Select(hit.collider.gameObject);
+                }
+                else if(hit.collider.gameObject.GetComponent<Archer>() != null)
                 {
                     Select(hit.collider.gameObject);
                 }

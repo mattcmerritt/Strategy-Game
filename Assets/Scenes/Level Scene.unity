@@ -331,7 +331,9 @@ MonoBehaviour:
   mapScale: 10
   villageBuildingRadius: 20
   numBuildings: 7
+  numRanges: 3
   buildingPrefab: {fileID: 3061463002227722825, guid: ffd1c1eaae898f948828c518522f254d, type: 3}
+  rangePrefab: {fileID: 3061463002227722825, guid: d85748a57fa9357429e60446015916a8, type: 3}
   floorLayer:
     serializedVersion: 2
     m_Bits: 64

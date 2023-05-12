@@ -6,8 +6,11 @@ public class WorkerIdleState : AgentState
 {
     public override void ActivateState(Agent agent)
     {
-        Debug.Log("WORKER: Waiting at home");
-        agent.GetNavAgent().SetDestination(((Worker)agent).GetHomePosition());
+        if(agent.GetComponent<Worker>() != null)
+        {
+            Debug.Log("WORKER: Waiting at home");
+            agent.GetNavAgent().SetDestination(((Worker)agent).GetHomePosition());
+        }
     }
 
     public override void Update(Agent agent)

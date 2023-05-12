@@ -9,14 +9,18 @@ public class DetectionRadius : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // verify that the collider does not belong to the agent themselves
-        if (other.gameObject == agent.gameObject)
+        if (agent != null && other.gameObject == agent.gameObject)
         {
             return;
         }
         // defer triggered events to agents
-        else
+        else if(agent != null)
         {
             agent.OnTriggerEnter(other);
+        }
+        else
+        {
+            // do nothing - agent is being deconstructed
         }
     }
 }
