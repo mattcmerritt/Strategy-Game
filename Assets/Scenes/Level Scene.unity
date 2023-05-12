@@ -152,12 +152,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 842f39b26d959094baf834d6298e420f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 100
-  depth: 100
-  squareSize: 1
   AllEnemies: []
   WaveSpawnTimer: 0
   CoordinatedAttackTimer: 0
+  EnemyPrefab: {fileID: 5097152427794499219, guid: adda2faaec3ebd647888ec3c0fdfa3a0, type: 3}
+  Map: {fileID: 890227015}
+  numberEnemiesInWave: 5
 --- !u!4 &224202235
 Transform:
   m_ObjectHideFlags: 0
@@ -166,7 +166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 224202233}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.677728, y: 61.694233, z: -22.734701}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -326,6 +326,20 @@ public class TerrainGeneration : MonoBehaviour
         }
     }
 
+    // Accessors for tile data
+    public int GetWidth()
+    {
+        return width;
+    }
+    public int GetDepth()
+    {
+        return depth;
+    }
+    public float GetSquareSize()
+    {
+        return squareSize;
+    }
+
     /*
     // Output all collisions to check for misplaced elements
     private void Update()
