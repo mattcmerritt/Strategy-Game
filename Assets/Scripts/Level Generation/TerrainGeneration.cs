@@ -35,6 +35,7 @@ public class TerrainGeneration : MonoBehaviour
     // Player worker data
     [SerializeField] private GameObject workerPrefab; // prefab to instantiate to add workers
     [SerializeField] private int numWorkers; // starting number of workers
+    private List<NavMeshAgent> agentsToEnable = new List<NavMeshAgent>(); // list of all agents loaded into the scene
 
     // Tree resource data
     [SerializeField] private float villageTreeRadius; // determines how far out the straggler trees can be placed
@@ -168,8 +169,8 @@ public class TerrainGeneration : MonoBehaviour
                 // if nothing is blocking the building, place it down at the height of its lowest corner
                 if (Physics.OverlapBoxNonAlloc(target, buildingPrefab.transform.localScale / 2, blockingColliders, Quaternion.identity, ~floorLayer, QueryTriggerInteraction.Ignore) == 0)
                 {
-                    locations.Add(target);
-                    extents.Add(buildingPrefab.transform.localScale / 2);
+                    // locations.Add(target);
+                    // extents.Add(buildingPrefab.transform.localScale / 2);
 
                     Instantiate(buildingPrefab, target, Quaternion.identity);
                     placed = true;
@@ -229,8 +230,8 @@ public class TerrainGeneration : MonoBehaviour
                 // if nothing is blocking the building, place it down at the height of its lowest corner
                 if (Physics.OverlapBoxNonAlloc(target, treeBound.extents, blockingColliders, Quaternion.identity, ~floorLayer, QueryTriggerInteraction.Ignore) == 0)
                 {
-                    locations.Add(target);
-                    extents.Add(treePrefab.transform.localScale / 2);
+                    // locations.Add(target);
+                    // extents.Add(treePrefab.transform.localScale / 2);
 
                     Instantiate(treePrefab, target, Quaternion.identity);
                     placed = true;
@@ -290,12 +291,12 @@ public class TerrainGeneration : MonoBehaviour
                 // if nothing is blocking the building, place it down at the height of its lowest corner
                 if (Physics.OverlapBoxNonAlloc(target, workerPrefab.transform.localScale / 2, blockingColliders, Quaternion.identity, ~floorLayer, QueryTriggerInteraction.Ignore) == 0)
                 {
-                    locations.Add(target);
-                    extents.Add(workerPrefab.transform.localScale / 2);
+                    // locations.Add(target);
+                    // extents.Add(workerPrefab.transform.localScale / 2);
 
                     GameObject newWorker = Instantiate(workerPrefab, target, Quaternion.identity);
                     NavMeshAgent agent = newWorker.GetComponent<NavMeshAgent>();
-                    agent.enabled = true;
+                    agentsToEnable.Add(agent);
                     placed = true;
                 }
             }
@@ -304,6 +305,12 @@ public class TerrainGeneration : MonoBehaviour
         // Generating the NavMesh
         NavMeshSurface surface = GetComponent<NavMeshSurface>();
         surface.BuildNavMesh();
+
+        // Enabling the NavMeshAgents
+        foreach (NavMeshAgent agent in agentsToEnable)
+        {
+            agent.enabled = true;
+        }
     }
 
     /*
