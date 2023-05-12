@@ -42,6 +42,10 @@ public class WalkToRangeState : AgentState
     {
         // Nothing additional to do
     }
+    public override void OnTriggerStay(Agent agent, Collider other)
+    {
+        // not implemented
+    }
 
     public override void EndState(Agent agent)
     {

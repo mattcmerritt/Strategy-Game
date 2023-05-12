@@ -15,6 +15,8 @@ public class GatherResourceState : AgentState
     public override void ActivateState(Agent agent)
     {
         Debug.Log("WORKER: Started to gather from " + Resource.gameObject.name);
+        // Swap to gathering the correct resource if necessary
+        ((Worker)agent).StartGatheringResource(Resource.GetResourceType());
         agent.StartCoroutine(CollectResource(agent));
     }
 
@@ -29,6 +31,11 @@ public class GatherResourceState : AgentState
     }
 
     public override void OnTriggerEnter(Agent agent, Collider other)
+    {
+        // not implemented
+    }
+
+    public override void OnTriggerStay(Agent agent, Collider other)
     {
         // not implemented
     }

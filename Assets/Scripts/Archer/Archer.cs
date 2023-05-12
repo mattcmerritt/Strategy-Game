@@ -12,7 +12,7 @@ public class Archer : Agent
     private void Start()
     {
         // Create new idle state
-        ChangeState(new WorkerIdleState());
+        ChangeState(new ArcherIdleState());
 
         CurrentHealth = MaxHealth;
     }

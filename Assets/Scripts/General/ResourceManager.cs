@@ -5,30 +5,16 @@ using TMPro;
 
 public class ResourceManager : MonoBehaviour
 {
-    [SerializeField] private int ResourceGoal, ResourcesCollected;
+    [SerializeField] private Dictionary<Resource, int> ResourcesCollected = new Dictionary<Resource, int>();
 
-    [SerializeField] private TMP_Text Collected, Target;
-
-    public void AddResources(int additional)
+    private void Start()
     {
-        ResourcesCollected += additional;
-        // Collected.text = "" + ResourcesCollected;
+        ResourcesCollected[Resource.Food] = 0;
+        ResourcesCollected[Resource.Wood] = 0;
     }
 
-    public bool HasMetResourceGoal()
+    public void AddResources(Resource type, int additional)
     {
-        return ResourcesCollected >= ResourceGoal;
-    }
-
-    public void IncrementResourceGoal()
-    {
-        ResourceGoal += 5;
-        // Target.text = "" + ResourceGoal;
-    }
-
-    public void DeccrementResourceGoal()
-    {
-        ResourceGoal -= 5;
-        // Target.text = "" + ResourceGoal;
+        ResourcesCollected[type] += additional;
     }
 }

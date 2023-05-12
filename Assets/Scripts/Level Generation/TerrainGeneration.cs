@@ -37,11 +37,14 @@ public class TerrainGeneration : MonoBehaviour
     [SerializeField] private int numWorkers; // starting number of workers
     private List<NavMeshAgent> agentsToEnable = new List<NavMeshAgent>(); // list of all agents loaded into the scene
 
-    // Tree resource data
-    [SerializeField] private float villageTreeRadius; // determines how far out the straggler trees can be placed
+    // General resource data
+    [SerializeField] private float villageForestRadius; // determines how far out the straggler trees can be placed
     [SerializeField] private GameObject treePrefab; // prefab to instantiate to add trees
     [SerializeField] private int numTrees; // starting number of trees
     [SerializeField] private int numTreesInVillage; // determines how many of the trees start close to the player
+    [SerializeField] private GameObject berryBushPrefab; // prefab to instantiate to add bushes
+    [SerializeField] private int numBerryBushes; // starting number of bushes
+    [SerializeField] private int numBerryBushesInVillage; // determines how many of the bushes start close to the player
 
     // Box casts
     private List<Vector3> locations = new List<Vector3>(), extents = new List<Vector3>();
@@ -246,7 +249,7 @@ public class TerrainGeneration : MonoBehaviour
         // cannot grab the values if it is not instantiated
         Bounds treeBound = treeCollider.bounds;
 
-        // finding distances to all four corners of space around worker
+        // finding distances to all four corners of space around tree
         Vector3[] treeCorners = {
             new Vector3(treeBound.extents.x, 0f, treeBound.extents.z),
             new Vector3(-treeBound.extents.x, 0f, -treeBound.extents.z),
@@ -257,18 +260,18 @@ public class TerrainGeneration : MonoBehaviour
         // Debug.Log($"max: {treeBound.max}, min: {treeBound.min}, extents: {treeBound.extents}");
         DestroyImmediate(tempTree); // remove from game once data is collected
 
-        // placing the workers
+        // placing the trees
         for (int i = 0; i < numTrees; i++)
         {
             bool placed = false;
             while (!placed)
             {
-                // calculate where to put the worker
+                // calculate where to put the tree
                 Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
-                Vector3 displacement = direction * Random.Range(i <= numTreesInVillage ? 0f : villageTreeRadius, i <= numTreesInVillage ? villageTreeRadius : width * squareSize / 2);
+                Vector3 displacement = direction * Random.Range(i <= numTreesInVillage ? 0f : villageForestRadius, i <= numTreesInVillage ? villageForestRadius : width * squareSize / 2);
 
                 Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
-                Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a worker, less the vertical component
+                Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a tree, less the vertical component
 
                 // find corners of the objects model to check height
                 float minimumHeight = (heightLayers + 1) * layerHeight;
@@ -285,7 +288,7 @@ public class TerrainGeneration : MonoBehaviour
                 // apply height to target location
                 Vector3 target = gridTarget + (minimumHeight + treeBound.extents.y) * Vector3.up;
 
-                // checking if the worker location is valid
+                // checking if the tree location is valid
                 Collider[] blockingColliders = new Collider[10];
 
                 // if nothing is blocking the building, place it down at the height of its lowest corner
@@ -295,6 +298,67 @@ public class TerrainGeneration : MonoBehaviour
                     // extents.Add(treePrefab.transform.localScale / 2);
 
                     Instantiate(treePrefab, target, Quaternion.identity);
+                    placed = true;
+                }
+            }
+        }
+
+        // Placing in resources (berry bushes)
+        GameObject tempBush = Instantiate(treePrefab, new Vector3(-100f, -100f, -100f), Quaternion.identity);
+        // need to grab the bounds of the building from a copy of the prefab
+        CapsuleCollider bushCollider = tempBush.GetComponent<CapsuleCollider>();
+        // cannot grab the values if it is not instantiated
+        Bounds bushBound = bushCollider.bounds;
+
+        // finding distances to all four corners of space around bush
+        Vector3[] bushCorners = {
+            new Vector3(bushBound.extents.x, 0f, bushBound.extents.z),
+            new Vector3(-bushBound.extents.x, 0f, -bushBound.extents.z),
+            new Vector3(-bushBound.extents.x, 0f, bushBound.extents.z),
+            new Vector3(bushBound.extents.x, 0f, -bushBound.extents.z),
+        };
+
+        Debug.Log($"max: {bushBound.max}, min: {bushBound.min}, extents: {bushBound.extents}");
+        DestroyImmediate(tempBush); // remove from game once data is collected
+
+        // placing the berry bushes
+        for (int i = 0; i < numBerryBushes; i++)
+        {
+            bool placed = false;
+            while (!placed)
+            {
+                // calculate where to put the bush
+                Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
+                Vector3 displacement = direction * Random.Range(i <= numBerryBushesInVillage ? 0f : villageForestRadius, i <= numBerryBushesInVillage ? villageForestRadius : width * squareSize / 2);
+
+                Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
+                Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a bush, less the vertical component
+
+                // find corners of the objects model to check height
+                float minimumHeight = (heightLayers + 1) * layerHeight;
+                foreach (Vector3 corner in bushCorners)
+                {
+                    // raycast down from the sky above the corners of the building to determine if it needs to be lower in the ground
+                    Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + gridTarget + corner, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer);
+                    // Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
+                    if (hit.point.y <= minimumHeight)
+                    {
+                        minimumHeight = hit.point.y;
+                    }
+                }
+                // apply height to target location
+                Vector3 target = gridTarget + (minimumHeight + bushBound.extents.y / 3) * Vector3.up;
+
+                // checking if the location is valid
+                Collider[] blockingColliders = new Collider[10];
+
+                // if nothing is blocking the building, place it down at the height of its lowest corner
+                if (Physics.OverlapBoxNonAlloc(target, bushBound.extents, blockingColliders, Quaternion.identity, ~floorLayer, QueryTriggerInteraction.Ignore) == 0)
+                {
+                    // locations.Add(target);
+                    // extents.Add(treePrefab.transform.localScale / 2);
+
+                    Instantiate(berryBushPrefab, target, Quaternion.identity);
                     placed = true;
                 }
             }
@@ -385,6 +449,20 @@ public class TerrainGeneration : MonoBehaviour
         {
             return -1;
         }
+    }
+
+    // Accessors for tile data
+    public int GetWidth()
+    {
+        return width;
+    }
+    public int GetDepth()
+    {
+        return depth;
+    }
+    public float GetSquareSize()
+    {
+        return squareSize;
     }
 
     /*

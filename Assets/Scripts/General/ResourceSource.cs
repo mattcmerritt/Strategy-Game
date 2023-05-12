@@ -5,6 +5,7 @@ using UnityEngine;
 public class ResourceSource : MonoBehaviour
 {
     [SerializeField] private int ResourcesLeft = 2;
+    [SerializeField] private Resource Type;
 
     public void TakeResource()
     {
@@ -19,5 +20,10 @@ public class ResourceSource : MonoBehaviour
     public bool IsDepleted()
     {
         return ResourcesLeft <= 0;
+    }
+
+    public Resource GetResourceType()
+    {
+        return Type;
     }
 }
