@@ -288,6 +288,9 @@ MonoBehaviour:
   markerPrefab: {fileID: 2458587008034946902, guid: 964b211ca9500c84c8ba374ae0d94306, type: 3}
   workerPrefab: {fileID: 5097152427794499219, guid: 2746e074f0b33df44bf9a49e976a23a1, type: 3}
   numWorkers: 2
+  treePrefab: {fileID: 9037182102661350406, guid: b4c54844b5303f4449b4cfa60a1959ed, type: 3}
+  numTrees: 3
+  numTreesInVillage: 3
 --- !u!4 &890227016
 Transform:
   m_ObjectHideFlags: 0

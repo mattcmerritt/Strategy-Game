@@ -36,6 +36,14 @@ public class TerrainGeneration : MonoBehaviour
     [SerializeField] private GameObject workerPrefab; // prefab to instantiate to add workers
     [SerializeField] private int numWorkers; // starting number of workers
 
+    // Tree resource data
+    [SerializeField] private GameObject treePrefab; // prefab to instantiate to add trees
+    [SerializeField] private int numTrees; // starting number of trees
+    [SerializeField] private int numTreesInVillage; // determines how many of the trees start close to the player
+
+    // Box casts
+    private List<Vector3> locations = new List<Vector3>(), extents = new List<Vector3>();
+
     private void Start()
     {
         // Generate height map
@@ -116,14 +124,14 @@ public class TerrainGeneration : MonoBehaviour
         // need to grab the bounds of the building from a copy of the prefab
         BoxCollider buildingCollider = tempBuilding.GetComponent<BoxCollider>();
         // cannot grab the values if it is not instantiated
-        Bounds bound = buildingCollider.bounds;
+        Bounds buildingBound = buildingCollider.bounds;
 
         // finding distances to all four corners of a building
-        Vector3[] corners = {
-            new Vector3(bound.extents.x, 0f, bound.extents.z),
-            new Vector3(-bound.extents.x, 0f, -bound.extents.z),
-            new Vector3(-bound.extents.x, 0f, bound.extents.z),
-            new Vector3(bound.extents.x, 0f, -bound.extents.z),
+        Vector3[] buildingCorners = {
+            new Vector3(buildingBound.extents.x, 0f, buildingBound.extents.z),
+            new Vector3(-buildingBound.extents.x, 0f, -buildingBound.extents.z),
+            new Vector3(-buildingBound.extents.x, 0f, buildingBound.extents.z),
+            new Vector3(buildingBound.extents.x, 0f, -buildingBound.extents.z),
         };
 
         // Debug.Log($"max: {bound.max}, min: {bound.min}, extents: {bound.extents}");
@@ -142,26 +150,31 @@ public class TerrainGeneration : MonoBehaviour
                 Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
                 Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a house, less the vertical component
 
+                // find corners of the objects model to check height
+                float minimumHeight = (heightLayers + 1) * layerHeight;
+                foreach (Vector3 corner in buildingCorners)
+                {
+                    // raycast down from the sky above the corners of the building to determine if it needs to be lower in the ground
+                    Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + gridTarget + corner, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer);
+                    // Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
+                    if (hit.point.y <= minimumHeight)
+                    {
+                        minimumHeight = hit.point.y;
+                    }
+                }
+                // apply height to target location
+                Vector3 target = gridTarget + (minimumHeight + buildingBound.extents.y) * Vector3.up;
+
                 // checking if the building location is valid
-                Collider[] blockingColliders = Physics.OverlapBox(gridTarget, buildingPrefab.transform.localScale / 2, Quaternion.identity, ~floorLayer);
+                Collider[] blockingColliders = Physics.OverlapBox(target, buildingPrefab.transform.localScale / 2, Quaternion.identity, ~floorLayer);
 
                 // if nothing is blocking the building, place it down at the height of its lowest corner
                 if (blockingColliders.Length == 0)
                 {
-                    // debug markers to ensure corners are in right place
-                    float minimumHeight = (heightLayers + 1) * layerHeight;
-                    foreach (Vector3 corner in corners)
-                    {
-                        // raycast down from the sky above the corners of the building to determine if it needs to be lower in the ground
-                        Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + gridTarget + corner, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer);
-                        // Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
-                        if (hit.point.y <= minimumHeight)
-                        {
-                            minimumHeight = hit.point.y;
-                        }
-                    }
+                    locations.Add(target);
+                    extents.Add(buildingPrefab.transform.localScale / 2);
 
-                    Instantiate(buildingPrefab, gridTarget + (minimumHeight + bound.extents.y) * Vector3.up, Quaternion.identity);
+                    Instantiate(buildingPrefab, target, Quaternion.identity);
                     placed = true;
                 }               
             }
@@ -198,31 +211,127 @@ public class TerrainGeneration : MonoBehaviour
                 Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
                 Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a worker, less the vertical component
 
-                // checking if the worker location is valid
-                Collider[] blockingColliders = Physics.OverlapBox(gridTarget, buildingPrefab.transform.localScale / 2, Quaternion.identity, ~floorLayer);
+                // find corners of the objects model to check height
+                float minimumHeight = (heightLayers + 1) * layerHeight;
+                foreach (Vector3 corner in workerCorners)
+                {
+                    // raycast down from the sky above the corners of the building to determine if it needs to be lower in the ground
+                    Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + gridTarget + corner, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer);
+                    // Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
+                    if (hit.point.y <= minimumHeight)
+                    {
+                        minimumHeight = hit.point.y;
+                    }
+                }
+                // apply height to target location
+                Vector3 target = gridTarget + (minimumHeight + workerBound.extents.y) * Vector3.up;
 
+                // checking if the worker location is valid
+                Collider[] blockingColliders = Physics.OverlapBox(target, workerPrefab.transform.localScale / 2, Quaternion.identity, ~floorLayer);
+                
                 // if nothing is blocking the building, place it down at the height of its lowest corner
                 if (blockingColliders.Length == 0)
                 {
-                    // debug markers to ensure corners are in right place
-                    float minimumHeight = (heightLayers + 1) * layerHeight;
-                    foreach (Vector3 corner in corners)
-                    {
-                        // raycast down from the sky above the corners of the building to determine if it needs to be lower in the ground
-                        Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + gridTarget + corner, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer);
-                        // Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
-                        if (hit.point.y <= minimumHeight)
-                        {
-                            minimumHeight = hit.point.y;
-                        }
-                    }
+                    locations.Add(target);
+                    extents.Add(workerPrefab.transform.localScale / 2);
 
-                    GameObject newWorker = Instantiate(workerPrefab, gridTarget + (minimumHeight + bound.extents.y) * Vector3.up, Quaternion.identity);
+                    GameObject newWorker = Instantiate(workerPrefab, target, Quaternion.identity);
                     NavMeshAgent agent = newWorker.GetComponent<NavMeshAgent>();
                     agent.enabled = true;
                     placed = true;
                 }
             }
+        }
+
+        // Placing in resources (trees)
+        GameObject tempTree = Instantiate(treePrefab, new Vector3(-100f, -100f, -100f), Quaternion.identity);
+        // need to grab the bounds of the building from a copy of the prefab
+        CapsuleCollider treeCollider = tempTree.GetComponent<CapsuleCollider>();
+        // cannot grab the values if it is not instantiated
+        Bounds treeBound = treeCollider.bounds;
+
+        // finding distances to all four corners of space around worker
+        Vector3[] treeCorners = {
+            new Vector3(treeBound.extents.x, 0f, treeBound.extents.z),
+            new Vector3(-treeBound.extents.x, 0f, -treeBound.extents.z),
+            new Vector3(-treeBound.extents.x, 0f, treeBound.extents.z),
+            new Vector3(treeBound.extents.x, 0f, -treeBound.extents.z),
+        };
+
+        // Debug.Log($"max: {treeBound.max}, min: {treeBound.min}, extents: {treeBound.extents}");
+        DestroyImmediate(tempTree); // remove from game once data is collected
+
+        // placing the workers
+        for (int i = 0; i < numTrees; i++)
+        {
+            bool placed = false;
+            while (!placed)
+            {
+                // calculate where to put the worker
+                Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
+                Vector3 displacement = direction * Random.Range(i <= numTreesInVillage ? 0f : villageRadius, i <= numTreesInVillage ? villageRadius : width * squareSize / 2);
+
+                Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
+                Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a worker, less the vertical component
+
+                // find corners of the objects model to check height
+                float minimumHeight = (heightLayers + 1) * layerHeight;
+                foreach (Vector3 corner in treeCorners)
+                {
+                    // raycast down from the sky above the corners of the building to determine if it needs to be lower in the ground
+                    Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + gridTarget + corner, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer);
+                    // Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
+                    if (hit.point.y <= minimumHeight)
+                    {
+                        minimumHeight = hit.point.y;
+                    }
+                }
+                // apply height to target location
+                Vector3 target = gridTarget + (minimumHeight + treeBound.extents.y) * Vector3.up;
+
+                // checking if the worker location is valid
+                Collider[] blockingColliders = Physics.OverlapBox(target, treePrefab.transform.localScale / 2, Quaternion.identity, ~floorLayer);
+
+                // if nothing is blocking the building, place it down at the height of its lowest corner
+                if (blockingColliders.Length == 0)
+                {
+                    locations.Add(target);
+                    extents.Add(treePrefab.transform.localScale / 2);
+
+                    Instantiate(treePrefab, target, Quaternion.identity);
+                    placed = true;
+                }
+            }
+        }
+    }
+
+    private void Update()
+    {
+        while (locations.Count > 0)
+        {
+            string type = "";
+            if (numBuildings > 0)
+            {
+                type = "building";
+                numBuildings--;
+            }
+            else if (numWorkers > 0)
+            {
+                type = "worker";
+                numWorkers--;
+            }
+            else if (numTrees > 0)
+            {
+                type = "tree";
+                numTrees--;
+            }
+
+            Collider[] blockingColliders = Physics.OverlapBox(locations[0], extents[0], Quaternion.identity, ~floorLayer);
+
+            Debug.Log($"Checking {type} at {locations[0]} with size {extents[0]}, found {blockingColliders.Length} objects");
+
+            locations.RemoveAt(0);
+            extents.RemoveAt(0);
         }
     }
 }
