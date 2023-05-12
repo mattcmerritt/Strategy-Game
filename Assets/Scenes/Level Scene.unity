@@ -224,9 +224,9 @@ MonoBehaviour:
   SelectedMaterial: {fileID: 2100000, guid: 299309289a1e46145b6e62fbd0d25c8b, type: 2}
   PreviousMaterial: {fileID: 0}
   CurrentSelectedObject: {fileID: 0}
-  PlayerLayer:
+  DetectLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256
 --- !u!114 &453472802
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -44,7 +44,7 @@ public class Agent : MonoBehaviour
     }
 
     // Delegate this task to the current state
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (ActiveState != null)
         {

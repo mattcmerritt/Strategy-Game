@@ -7,7 +7,7 @@ public class UnitSelector : MonoBehaviour
 {
     [SerializeField] private Material SelectedMaterial, PreviousMaterial;
     [SerializeField] private GameObject CurrentSelectedObject;
-    [SerializeField] private LayerMask PlayerLayer;
+    [SerializeField] private LayerMask DetectLayer;
 
     private void Update()
     {
@@ -34,7 +34,7 @@ public class UnitSelector : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
                 Debug.Log("ray.origin " + ray.origin + " ray.direction " + ray.direction);
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~DetectLayer))
                 {
                     // If a resource was clicked, start gathering resources
                     if(hit.collider.gameObject.GetComponent<ResourceSource>() != null)
@@ -60,7 +60,7 @@ public class UnitSelector : MonoBehaviour
             Debug.Log("here");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~DetectLayer))
             {
                 Debug.Log(hit.collider.gameObject.name);
                 if(hit.collider.gameObject.GetComponent<Worker>() != null)
