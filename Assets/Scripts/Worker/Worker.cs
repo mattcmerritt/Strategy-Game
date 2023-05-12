@@ -6,8 +6,6 @@ public class Worker : Agent
 {
     [SerializeField] private int HeldResources = 0, ResourceCapacity = 5;
     [SerializeField] private Vector3 HomePosition;
-    [SerializeField] private bool IsGuarded = false;
-    [SerializeField] private bool IsScared = false;
     [SerializeField] private ResourceSource CurrentFocus;
 
     // Visual representation of inventory
@@ -87,53 +85,6 @@ public class Worker : Agent
     public void SetHomePosition(Vector3 pos)
     {
         HomePosition = pos;
-    }
-
-    // Helper method for guarding and preventing too many guards from following one worker
-    public void StartGuarding()
-    {
-        IsGuarded = true;
-    }
-
-    // Helper method for guarding and preventing too many guards from following one worker
-    public void StopGuarding()
-    {
-        IsGuarded = false;
-    }
-
-    // Helper method for guarding and preventing too many guards from following one worker
-    public bool CheckIfGuarded()
-    {
-        return IsGuarded;
-    }
-
-    // Method to determine what happens when attacked
-    public void Scare()
-    {
-        // Drops all the logs
-        HeldResources = 0;
-
-        // Hide the logs from the player
-        for (int i = 0; i < LogsCollected.Count; i++)
-        {
-            LogsCollected[i].SetActive(false);
-        }
-
-        // Freeze up
-        IsScared = true;
-        ChangeState(new ScaredState());
-    }
-
-    // Method to determine what happens when attacked
-    public bool GetIsScared()
-    {
-        return IsScared;
-    }
-
-    // Method to unscare worker
-    public void CalmDown()
-    {
-        IsScared = false;
     }
 
     // Helper for getting current focused resource source

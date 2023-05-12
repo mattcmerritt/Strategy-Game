@@ -15,13 +15,24 @@ public class UnitSelector : MonoBehaviour
         {
             Worker worker = CurrentSelectedObject.GetComponent<Worker>();
             NavMeshAgent agent = CurrentSelectedObject.GetComponent<NavMeshAgent>();
+            LineRenderer line = CurrentSelectedObject.GetComponent<LineRenderer>();
+
+            // draw path line
+            Vector3[] lineWaypoints = agent.path.corners;
+            if(lineWaypoints != null && lineWaypoints.Length > 1)
+            {
+                line.positionCount = lineWaypoints.Length;
+                for (int i = 0; i < lineWaypoints.Length; i++)
+                {
+                    line.SetPosition(i, lineWaypoints[i]);
+                }
+            }
 
             if (Input.GetMouseButtonDown(1))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
                 Debug.Log("ray.origin " + ray.origin + " ray.direction " + ray.direction);
-                Debug.DrawRay(ray.origin,ray.direction,Color.red);
                 if (Physics.Raycast(ray, out hit))
                 {
                     // If a resource was clicked, start gathering resources
@@ -34,8 +45,10 @@ public class UnitSelector : MonoBehaviour
                     // If nothing interesting was hit, move to position clicked
                     else
                     {
-                        worker.SetHomePosition(hit.point);
-                        agent.SetDestination(hit.point);
+                        Vector3 newHome = new Vector3(hit.point.x, worker.transform.position.y, hit.point.z);
+                        worker.SetHomePosition(newHome);
+                        agent.SetDestination(newHome);
+                        // Debug.Log(newHome);
                     }
                 }
             }
@@ -43,17 +56,19 @@ public class UnitSelector : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log("here");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
+                Debug.Log(hit.collider.gameObject.name);
                 if(hit.collider.gameObject.GetComponent<Worker>() != null)
                 {
                     Select(hit.collider.gameObject);
                 }
                 else
                 {
-                    CurrentSelectedObject = null;
+                    Select(null);
                 }
             }
         }
@@ -67,9 +82,11 @@ public class UnitSelector : MonoBehaviour
         }
 
         CurrentSelectedObject = selectedObject;
-        PreviousMaterial = CurrentSelectedObject.GetComponent<MeshRenderer>().material;
-        CurrentSelectedObject.GetComponent<MeshRenderer>().material = SelectedMaterial;
+        
+        if(CurrentSelectedObject != null)
+        {
+            PreviousMaterial = CurrentSelectedObject.GetComponent<MeshRenderer>().material;
+            CurrentSelectedObject.GetComponent<MeshRenderer>().material = SelectedMaterial;
+        }
     }
-
-    
 }
