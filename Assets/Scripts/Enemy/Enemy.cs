@@ -6,6 +6,7 @@ public class Enemy : Agent
 {
     [SerializeField] private Worker Target;
     [SerializeField] private GameObject Projectile;
+    [SerializeField] private float MinDistance;
     // Start by idling
     private void Start()
     {
@@ -28,6 +29,7 @@ public class Enemy : Agent
                 closest = worker;
                 distanceToClosest = distanceToWorker;
                 Target = closest;
+                MinDistance = distanceToClosest;
             }
         }
 
@@ -39,8 +41,18 @@ public class Enemy : Agent
         return Target;
     }
 
+    public void SetTarget(Worker target)
+    {
+        Target = target;
+    }
+
     public GameObject GetProjectile()
     {
         return Projectile;
+    }
+
+    public float GetMinDistance()
+    {
+        return MinDistance;
     }
 }
