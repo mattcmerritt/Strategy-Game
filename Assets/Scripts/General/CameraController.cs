@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField, Range(1, 10)] private int CameraSpeed;
+    [SerializeField, Range(1, 100)] private int CameraSpeed;
     private void Update()
     {
         Vector3 MoveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));

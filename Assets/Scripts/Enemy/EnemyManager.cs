@@ -10,12 +10,13 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField] private Enemy[] AllEnemies;
     [SerializeField] private float WaveSpawnTimer, CoordinatedAttackTimer;
-    private float WaveSpawnCooldown = 180f, CoordinatedAttackCooldown = 120f;
+    private float WaveSpawnCooldown = 45f, CoordinatedAttackCooldown = 90f;
 
     [SerializeField] private GameObject EnemyPrefab;
     [SerializeField] private TerrainGeneration Map;
 
-    [SerializeField] private int numberEnemiesInWave = 5;
+    [SerializeField] private int enemyBase = 2;
+    [SerializeField] private int waveNumber = 0;
 
     private void Start()
     {
@@ -55,6 +56,7 @@ public class EnemyManager : MonoBehaviour
             // pick a corner to spawn the wave in
             int corner = Random.Range(0, 4);
 
+            int numberEnemiesInWave = Mathf.RoundToInt(Mathf.Pow(enemyBase, waveNumber));
             for (int i = 0; i < numberEnemiesInWave; i++)
             {
                 float x = Random.Range(minCorners[corner].x, maxCorners[corner].x);
@@ -66,6 +68,7 @@ public class EnemyManager : MonoBehaviour
 
             // start the timer again
             WaveSpawnTimer = WaveSpawnCooldown;
+            waveNumber++;
         }
 
         if(CoordinatedAttackTimer <= 0f)

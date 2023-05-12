@@ -29,12 +29,12 @@ public class UI : MonoBehaviour
             if (w != null)
             {
                 UnitTitle.text = "Worker";
-                UnitDetails.text = $"Health: {w.GetHealthString()}\nResources: {w.GetResourcesString()}";
+                UnitDetails.text = $"Health: {w.GetHealthString()}\nResources: {w.GetResourcesString()}\nCan be sent to the archery range to change classes to an archer.";
             }
             else if (a != null)
             {
                 UnitTitle.text = "Archer";
-                UnitDetails.text = $"Health: {a.GetHealthString()}";
+                UnitDetails.text = $"Health: {a.GetHealthString()}\nCan be sent to the house to change classes to a worker.";
             }
             else if (h != null)
             {
