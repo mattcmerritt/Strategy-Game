@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class EnemyPursueState : AgentState
 {
-    [SerializeField] private float Range = 10f;
-    [SerializeField] private float ForceMultiplier = 20f;
-    [SerializeField] private float FiringDelay = 0f;
+    [SerializeField] private float Range = 15f; // distance at which the enemy will start firing
+    [SerializeField] private float HorizontalForceMultiplier = -0.75f; // initial power of the projectile
+    [SerializeField] private float HorizontalForceMax = 20f; // max horizontal power of the projectile
+    [SerializeField] private float VerticalForceMultiplier = 0.5f; // initial power of the projectile
+    [SerializeField] private float FiringDelay = 0f; // current firing delay
+    [SerializeField] private float FireCooldown = 2f; // max firing delay
+    [SerializeField] private float StandDistance = 7f; // distance where enemy will not get closer
+
     public override void ActivateState(Agent agent)
     {
         
@@ -14,18 +19,41 @@ public class EnemyPursueState : AgentState
 
     public override void Update(Agent agent)
     {
-        if(((Enemy)agent).GetTarget() != null)
+        Enemy enemy = (Enemy) agent;
+        Agent target = enemy.GetTarget();
+
+        if (enemy.GetTarget() != null)
         {
-            agent.GetNavAgent().SetDestination(((Enemy)agent).GetTarget().transform.position);
-            if(FiringDelay <= 0f)
+            agent.GetNavAgent().SetDestination(target.transform.position);
+
+            // tell the enemy to stop chasing if they are close enough to the target
+            
+
+            if (Vector3.Distance(enemy.transform.position, target.transform.position) < StandDistance)
             {
-                if(Vector3.Distance(agent.transform.position, ((Enemy)agent).GetTarget().transform.position) < Range)
+                agent.GetNavAgent().isStopped = true;
+                // turn to face target
+                agent.transform.LookAt(target.transform);
+            }
+            else
+            {
+                agent.GetNavAgent().isStopped = false;
+                agent.transform.LookAt(target.transform);
+            }
+
+            if (FiringDelay <= 0f)
+            {
+                if(Vector3.Distance(agent.transform.position, target.transform.position) < Range)
                 {
-                    GameObject projectileToFire = GameObject.Instantiate(((Enemy)agent).GetProjectile());
-                    projectileToFire.transform.position = ((Enemy)agent).transform.position + ((Enemy)agent).transform.forward;
-                    projectileToFire.transform.LookAt(((Enemy)agent).transform);
-                    projectileToFire.GetComponent<Rigidbody>().AddForce(((Enemy)agent).transform.forward * ForceMultiplier, ForceMode.Impulse);
-                    FiringDelay = 1f;
+                    GameObject projectileToFire = GameObject.Instantiate(enemy.GetProjectile());
+                    projectileToFire.transform.position = enemy.transform.position + enemy.transform.forward;
+                    projectileToFire.transform.LookAt(enemy.transform);
+
+                    float shotVerticalForce = Vector3.Distance(agent.transform.position, target.transform.position) * VerticalForceMultiplier;
+                    float shotHorizontalForce = HorizontalForceMax + Vector3.Distance(agent.transform.position, target.transform.position) * HorizontalForceMultiplier;
+
+                    projectileToFire.GetComponent<Rigidbody>().AddForce(enemy.transform.forward * shotHorizontalForce + Vector3.up * shotVerticalForce, ForceMode.Impulse);
+                    FiringDelay = FireCooldown;
                 }
             }
             else
@@ -47,6 +75,7 @@ public class EnemyPursueState : AgentState
 
     public override void EndState(Agent agent)
     {
-        // Nothing additional to do
+        // Ensure that the agent is not frozen
+        agent.GetNavAgent().isStopped = false;
     }
 }
