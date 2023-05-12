@@ -224,6 +224,9 @@ MonoBehaviour:
   SelectedMaterial: {fileID: 2100000, guid: 299309289a1e46145b6e62fbd0d25c8b, type: 2}
   PreviousMaterial: {fileID: 0}
   CurrentSelectedObject: {fileID: 0}
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &453472802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +276,7 @@ MonoBehaviour:
   width: 100
   depth: 100
   heightLayers: 3
-  layerHeight: 1
+  layerHeight: 0.75
   squareSize: 1
   mapScale: 10
   villageRadius: 20

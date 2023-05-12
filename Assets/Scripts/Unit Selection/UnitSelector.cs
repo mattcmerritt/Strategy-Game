@@ -7,6 +7,7 @@ public class UnitSelector : MonoBehaviour
 {
     [SerializeField] private Material SelectedMaterial, PreviousMaterial;
     [SerializeField] private GameObject CurrentSelectedObject;
+    [SerializeField] private LayerMask PlayerLayer;
 
     private void Update()
     {

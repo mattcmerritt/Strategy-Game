@@ -210,7 +210,7 @@ public class TerrainGeneration : MonoBehaviour
                     {
                         // raycast down from the sky above the corners of the building to determine if it needs to be lower in the ground
                         Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + gridTarget + corner, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer);
-                        Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
+                        // Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
                         if (hit.point.y <= minimumHeight)
                         {
                             minimumHeight = hit.point.y;
