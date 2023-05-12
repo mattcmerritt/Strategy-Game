@@ -52,6 +52,15 @@ public class WalkToResourceState : AgentState
         }
     }
 
+    public override void OnTriggerStay(Agent agent, Collider other)
+    {
+        // if agent has reached its destination, start gathering
+        if (Resource != null && other.gameObject == Resource.gameObject)
+        {
+            agent.ChangeState(new GatherResourceState(Resource));
+        }
+    }
+
     public override void EndState(Agent agent)
     {
         // Nothing additional to do

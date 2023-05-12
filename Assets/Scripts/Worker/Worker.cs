@@ -91,9 +91,9 @@ public class Worker : Agent
             // Show the berries to the player
             if (HeldResourceType == Resource.Food)
             {
-                for (int i = 0; i < HeldResources; i++)
+                for (int i = 0; i < BerriesCollected.Count; i++)
                 {
-                    BerriesCollected[i].SetActive(true);
+                    BerriesCollected[i].SetActive(false);
                 }
             }
         }

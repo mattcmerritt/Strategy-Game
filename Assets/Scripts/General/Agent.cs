@@ -51,4 +51,13 @@ public class Agent : MonoBehaviour
             ActiveState.OnTriggerEnter(this, other);
         }
     }
+
+    // Delegate this task to the current state
+    public void OnTriggerStay(Collider other)
+    {
+        if (ActiveState != null)
+        {
+            ActiveState.OnTriggerEnter(this, other);
+        }
+    }
 }
