@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 453472800}
   - component: {fileID: 453472799}
   - component: {fileID: 453472798}
+  - component: {fileID: 453472802}
+  - component: {fileID: 453472801}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -207,6 +209,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+--- !u!114 &453472801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453472797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a8c44ded86e884f994865cbf369ca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedMaterial: {fileID: 2100000, guid: 299309289a1e46145b6e62fbd0d25c8b, type: 2}
+  PreviousMaterial: {fileID: 0}
+  CurrentSelectedObject: {fileID: 0}
+--- !u!114 &453472802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453472797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a7d47a364bfe3e4783ec35332a22b2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraSpeed: 10
 --- !u!1 &890227014
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,6 +283,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   markerPrefab: {fileID: 2458587008034946902, guid: 964b211ca9500c84c8ba374ae0d94306, type: 3}
+  workerPrefab: {fileID: 5097152427794499219, guid: 2746e074f0b33df44bf9a49e976a23a1, type: 3}
+  numWorkers: 2
 --- !u!4 &890227016
 Transform:
   m_ObjectHideFlags: 0
