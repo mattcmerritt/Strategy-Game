@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Unity.AI.Navigation;
 
 // Procedurally generates the terrain on a single mesh
@@ -30,6 +31,10 @@ public class TerrainGeneration : MonoBehaviour
     // Floor layer
     [SerializeField] private LayerMask floorLayer; // layer to ignore with box overlap
     [SerializeField] private GameObject markerPrefab; // debug tool for testing bounds
+
+    // Player worker data
+    [SerializeField] private GameObject workerPrefab; // prefab to instantiate to add workers
+    [SerializeField] private int numWorkers; // starting number of workers
 
     private void Start()
     {
@@ -159,6 +164,64 @@ public class TerrainGeneration : MonoBehaviour
                     Instantiate(buildingPrefab, gridTarget + (minimumHeight + bound.extents.y) * Vector3.up, Quaternion.identity);
                     placed = true;
                 }               
+            }
+        }
+
+        // Placing in player workers
+        GameObject tempWorker = Instantiate(workerPrefab, new Vector3(-100f, -100f, -100f), Quaternion.identity);
+        // need to grab the bounds of the building from a copy of the prefab
+        CapsuleCollider workerCollider = tempWorker.GetComponent<CapsuleCollider>();
+        // cannot grab the values if it is not instantiated
+        Bounds workerBound = workerCollider.bounds;
+
+        // finding distances to all four corners of space around worker
+        Vector3[] workerCorners = {
+            new Vector3(workerBound.extents.x, 0f, workerBound.extents.z),
+            new Vector3(-workerBound.extents.x, 0f, -workerBound.extents.z),
+            new Vector3(-workerBound.extents.x, 0f, workerBound.extents.z),
+            new Vector3(workerBound.extents.x, 0f, -workerBound.extents.z),
+        };
+
+        // Debug.Log($"max: {workerBound.max}, min: {workerBound.min}, extents: {workerBound.extents}");
+        DestroyImmediate(tempWorker); // remove from game once data is collected
+
+        // placing the workers
+        for (int i = 0; i < numWorkers; i++)
+        {
+            bool placed = false;
+            while (!placed)
+            {
+                // calculate where to put the worker
+                Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
+                Vector3 displacement = direction * Random.Range(0f, villageRadius);
+
+                Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
+                Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a worker, less the vertical component
+
+                // checking if the worker location is valid
+                Collider[] blockingColliders = Physics.OverlapBox(gridTarget, buildingPrefab.transform.localScale / 2, Quaternion.identity, ~floorLayer);
+
+                // if nothing is blocking the building, place it down at the height of its lowest corner
+                if (blockingColliders.Length == 0)
+                {
+                    // debug markers to ensure corners are in right place
+                    float minimumHeight = (heightLayers + 1) * layerHeight;
+                    foreach (Vector3 corner in corners)
+                    {
+                        // raycast down from the sky above the corners of the building to determine if it needs to be lower in the ground
+                        Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + gridTarget + corner, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer);
+                        Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
+                        if (hit.point.y <= minimumHeight)
+                        {
+                            minimumHeight = hit.point.y;
+                        }
+                    }
+
+                    GameObject newWorker = Instantiate(workerPrefab, gridTarget + (minimumHeight + bound.extents.y) * Vector3.up, Quaternion.identity);
+                    NavMeshAgent agent = newWorker.GetComponent<NavMeshAgent>();
+                    agent.enabled = true;
+                    placed = true;
+                }
             }
         }
     }
