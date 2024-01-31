@@ -21,10 +21,6 @@ public class ClickIndicator : MonoBehaviour
 
     }
 
-    public void EnableArrowCanvas()
-    {
-        ArrowCanvas.gameObject.SetActive(true);
-    }
     public void DisableArrowCanvas()
     {
         ArrowCanvas.gameObject.SetActive(false);
