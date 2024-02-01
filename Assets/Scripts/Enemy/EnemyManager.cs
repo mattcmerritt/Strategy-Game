@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -19,12 +18,13 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private int enemyBase = 2;
     [SerializeField] private int waveNumber = 0;
 
-    // Enemy wave spawning UI elements
-    [SerializeField] private TMP_Text TimerText;
-
+    // Setting up singleton
+    public static EnemyManager Instance;
 
     private void Start()
     {
+        Instance = this;
+
         WaveSpawnTimer = WaveSpawnCooldown;
         CoordinatedAttackTimer = CoordinatedAttackCooldown;
 
@@ -38,11 +38,6 @@ public class EnemyManager : MonoBehaviour
     {
         WaveSpawnTimer -= Time.deltaTime;
         CoordinatedAttackTimer -= Time.deltaTime;
-
-        // Timer display
-        int minutes = Mathf.Clamp(((int) WaveSpawnTimer / 60), 0, ((int) WaveSpawnTimer / 60));
-        int seconds = Mathf.Clamp(((int) WaveSpawnTimer % 60), 0, ((int) WaveSpawnTimer % 60));
-        TimerText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
 
         if (WaveSpawnTimer <= 0f)
         {
@@ -115,4 +110,8 @@ public class EnemyManager : MonoBehaviour
         return waveNumber;
     }
 
+    public float GetTimeForWave()
+    {
+        return WaveSpawnTimer;
+    }
 }

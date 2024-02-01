@@ -6,18 +6,38 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField] private TMP_Text WoodStockpile, FoodStockpile, EnemiesDefeated;
+    [SerializeField] private TMP_Text WoodStockpile, FoodStockpile, EnemiesLabel;
     [SerializeField] private ResourceManager ResourceManager;
 
     [SerializeField] private TMP_Text UnitTitle, UnitDetails;
     [SerializeField] private GameObject CreateButton;
     [SerializeField] private UnitSelector UnitSelector;
 
+    // Enemy wave spawning UI elements
+    [SerializeField] private TMP_Text TimerText;
+
+    // Setting up singleton
+    public static UI Instance;
+
+    private void Start()
+    {
+        Instance = this;
+    }
+
     private void Update()
     {
-        WoodStockpile.text = $"Wood Stockpile: {ResourceManager.GetResourceStockpile(Resource.Wood)}";
-        FoodStockpile.text = $"Food Stockpile: {ResourceManager.GetResourceStockpile(Resource.Food)}";
-        EnemiesDefeated.text = $"Enemies Defeated: {Enemy.DeathCount}";
+        WoodStockpile.text = $"{ResourceManager.GetResourceStockpile(Resource.Wood)}";
+        FoodStockpile.text = $"{ResourceManager.GetResourceStockpile(Resource.Food)}";
+
+        // fetch the current number of enemies
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        EnemiesLabel.text = $"Active: {enemies.Length}";
+
+        // Timer display
+        float waveTimer = EnemyManager.Instance.GetTimeForWave();
+        int minutes = Mathf.Clamp(((int) waveTimer / 60), 0, ((int) waveTimer / 60));
+        int seconds = Mathf.Clamp(((int) waveTimer % 60), 0, ((int) waveTimer % 60));
+        TimerText.text = $"Reinforces in: {string.Format("{0:0}:{1:00}", minutes, seconds)}";
 
         GameObject selected = UnitSelector.GetSelectedObject();
         if (selected != null)
