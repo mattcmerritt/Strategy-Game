@@ -25,8 +25,10 @@ public class WalkToRangeState : AgentState
         // If sufficiently close to home, despawn and spawn new archer
         Vector3 home = Range.transform.position;
         home.y = agent.transform.position.y;
-        if (Vector3.Magnitude(home - agent.transform.position) < MinDistanceFromHome)
+        if (ResourceManager.Instance.GetResourceStockpile(Resource.Wood) > 10 && Vector3.Magnitude(home - agent.transform.position) < MinDistanceFromHome)
         {
+            // remove the resources
+            ResourceManager.Instance.RemoveResource(Resource.Wood, 10);
             Vector3 spawnPos = ((Worker)agent).transform.position;
             // Debug.Log($"spos: {spawnPos}");
             agent.ChangeState(null);
