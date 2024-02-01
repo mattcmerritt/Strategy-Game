@@ -302,6 +302,40 @@ public class TerrainGeneration : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        ResourceSource[] resources = FindObjectsOfType<ResourceSource>();
+
+        int foodSources = 0, woodSources = 0;
+        foreach (ResourceSource source in resources)
+        {
+            if (source.GetResourceType() == Resource.Wood)
+            {
+                woodSources++;
+            }
+            else if (source.GetResourceType() == Resource.Food)
+            {
+                foodSources++;
+            }
+        }
+
+        if (foodSources < 5)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                SpawnBush(false);
+            }
+        }
+        
+        if (woodSources < 30)
+        {
+            for (int i = 0; i < 30; i++)
+            {
+                SpawnTree(false);
+            }
+        }
+    }
+
     // ------------------------------------- SPAWNING METHODS -------------------------------------
     public void SpawnHouse()
     {
