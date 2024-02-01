@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 8640465248185283095}
   - component: {fileID: 8375982243836427451}
   - component: {fileID: 7952227767396585865}
+  - component: {fileID: 9140591059317443787}
   m_Layer: 0
   m_Name: Click Indicator
   m_TagString: Untagged
@@ -179,7 +180,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -204,6 +205,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9140591059317443787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700883337158267483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9815403e70831b94f857701759f1a2fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ArrowCanvas: {fileID: 0}
 --- !u!1 &2063979608345368755
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,7 +670,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1757087778078267498
 Transform:
   m_ObjectHideFlags: 0

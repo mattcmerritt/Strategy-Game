@@ -9,6 +9,15 @@ public class UnitSelector : MonoBehaviour
     [SerializeField] private GameObject CurrentSelectedObject;
     [SerializeField] private LayerMask DetectLayer;
 
+    [SerializeField] public static UnitSelector Instance;
+
+    [SerializeField] private GameObject CursorPrefab;
+
+    private void OnEnable()
+    {
+        Instance = this;
+    }
+
     private void Update()
     {
         // Worker behavior
@@ -57,6 +66,9 @@ public class UnitSelector : MonoBehaviour
                         agent.SetDestination(newHome);
                         // Debug.Log(newHome);
                     }
+
+                    // Regardless of what was done prior, play the cursor animation there
+                    Instantiate(CursorPrefab, new Vector3(hit.point.x, worker.transform.position.y, hit.point.z), Quaternion.identity);
                 }
             }
         }
@@ -106,6 +118,9 @@ public class UnitSelector : MonoBehaviour
                         archer.SetNewPosition(newPos);
                         archer.ChangeState(new ArcherRepositionState());
                     }
+
+                    // Regardless of what was done prior, play the cursor animation there
+                    Instantiate(CursorPrefab, new Vector3(hit.point.x, archer.transform.position.y, hit.point.z), Quaternion.identity);
                 }
             }
         }

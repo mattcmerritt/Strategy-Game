@@ -6,23 +6,18 @@ using UnityEngine.UI;
 public class ClickIndicator : MonoBehaviour
 {
     [SerializeField] private Canvas ArrowCanvas;
+    // [SerializeField] private MeshRenderer[] Renderers;
 
     private void OnEnable()
     {
         // set event camera
-        ArrowCanvas = GetComponent<Canvas>();
+        ArrowCanvas = GetComponentInChildren<Canvas>();
         ArrowCanvas.worldCamera = Camera.current;
-
-
-    }
-
-    private void Update()
-    {
-
     }
 
     public void DisableArrowCanvas()
     {
-        ArrowCanvas.gameObject.SetActive(false);
+        Destroy(this.gameObject);
+        // ArrowCanvas.gameObject.SetActive(false);
     }
 }
