@@ -100,4 +100,9 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public int GetWaveCounter()
+    {
+        return waveNumber;
+    }
+
 }
