@@ -7,8 +7,13 @@ public class ResourceManager : MonoBehaviour
 {
     [SerializeField] private Dictionary<Resource, int> ResourcesCollected = new Dictionary<Resource, int>();
 
+    // Setting up singleton reference
+    public static ResourceManager Instance;
+
     private void Start()
     {
+        Instance = this;
+
         ResourcesCollected[Resource.Food] = 0;
         ResourcesCollected[Resource.Wood] = 0;
     }
