@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private int enemyBase = 2;
     [SerializeField] private int waveNumber = 0;
 
+    // Enemy wave spawning UI elements
+    [SerializeField] private TMP_Text TimerText;
+
+
     private void Start()
     {
         WaveSpawnTimer = WaveSpawnCooldown;
@@ -34,7 +39,12 @@ public class EnemyManager : MonoBehaviour
         WaveSpawnTimer -= Time.deltaTime;
         CoordinatedAttackTimer -= Time.deltaTime;
 
-        if(WaveSpawnTimer <= 0f)
+        // Timer display
+        int minutes = Mathf.Clamp(((int) WaveSpawnTimer / 60), 0, ((int) WaveSpawnTimer / 60));
+        int seconds = Mathf.Clamp(((int) WaveSpawnTimer % 60), 0, ((int) WaveSpawnTimer % 60));
+        TimerText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
+
+        if (WaveSpawnTimer <= 0f)
         {
             Debug.Log("Spawning Wave!");
             // trees spawn in a radius around the center, meaning that the corner 1/64ths of the map are clear
