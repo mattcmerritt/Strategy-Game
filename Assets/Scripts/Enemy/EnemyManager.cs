@@ -61,7 +61,8 @@ public class EnemyManager : MonoBehaviour
             // pick a corner to spawn the wave in
             int corner = Random.Range(0, 4);
 
-            int numberEnemiesInWave = Mathf.RoundToInt(Mathf.Pow(enemyBase, waveNumber));
+            // int numberEnemiesInWave = Mathf.RoundToInt(Mathf.Pow(enemyBase, waveNumber));
+            int numberEnemiesInWave = Mathf.Max(1, 2 * waveNumber + waveNumber); // spawns 1, 3, 6, 9, 12, etc.
             for (int i = 0; i < numberEnemiesInWave; i++)
             {
                 float x = Random.Range(minCorners[corner].x, maxCorners[corner].x);
