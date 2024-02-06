@@ -656,7 +656,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Reinforces in:'
+  m_text: 'Raid Approaching:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -890,7 +890,6 @@ MonoBehaviour:
   CoordinatedAttackTimer: 0
   EnemyPrefab: {fileID: 5097152427794499219, guid: adda2faaec3ebd647888ec3c0fdfa3a0, type: 3}
   Map: {fileID: 890227015}
-  enemyBase: 2
   waveNumber: 0
 --- !u!4 &224202235
 Transform:
@@ -2008,7 +2007,7 @@ RectTransform:
   m_Father: {fileID: 545045164}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.7, y: 0}
-  m_AnchorMax: {x: 0.95, y: 1}
+  m_AnchorMax: {x: 0.975, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

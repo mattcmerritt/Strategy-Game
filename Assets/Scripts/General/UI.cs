@@ -37,7 +37,7 @@ public class UI : MonoBehaviour
         float waveTimer = EnemyManager.Instance.GetTimeForWave();
         int minutes = Mathf.Clamp(((int) waveTimer / 60), 0, ((int) waveTimer / 60));
         int seconds = Mathf.Clamp(((int) waveTimer % 60), 0, ((int) waveTimer % 60));
-        TimerText.text = $"Reinforces in: {string.Format("{0:0}:{1:00}", minutes, seconds)}";
+        TimerText.text = $"Raid Approaching: {string.Format("{0:0}:{1:00}", minutes, seconds)}";
 
         GameObject selected = UnitSelector.GetSelectedObject();
         if (selected != null)
