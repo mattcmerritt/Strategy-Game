@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class WalkToTowerState : AgentState
 {
     private Tower Tower;
+    private float MinDistanceFromHome = 4f;
 
     public WalkToTowerState(Tower tower)
     {
@@ -21,13 +22,16 @@ public class WalkToTowerState : AgentState
 
     public override void Update(Agent agent)
     {
-        // If sufficiently close to home, despawn and spawn new archer
         Vector3 home = Tower.transform.position;
         home.y = agent.transform.position.y;
-        
-        GameObject character = agent.gameObject;
-        Tower.SetGarrisonedUnit(character);
-        agent.ChangeState(null);
+
+        // If sufficiently close to home, move into tower
+        if (Vector3.Magnitude(home - agent.transform.position) < MinDistanceFromHome)
+        {
+            GameObject character = agent.gameObject;
+            Tower.SetGarrisonedUnit(character);
+            agent.ChangeState(null);
+        }
     }
 
     public override void OnTriggerEnter(Agent agent, Collider other)

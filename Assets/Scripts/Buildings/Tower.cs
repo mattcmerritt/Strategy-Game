@@ -30,7 +30,9 @@ public class Tower : Building
         GarrisonedUnit.transform.localPosition = TowerPosition;
 
         // prevent character from sliding away
-        GarrisonedUnit.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        Rigidbody rb = GarrisonedUnit.GetComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
         // force unit to idle by disabling nav agent temporarily
         GarrisonedUnit.GetComponent<NavMeshAgent>().enabled = false;
