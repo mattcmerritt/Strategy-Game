@@ -2582,9 +2582,10 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: There are two ways to move the camera:<br> <br>- WASD
-            / Arrow keys to move the camera in a direction<br>- Edge panning by moving
-            the mouse to the edges of the window<br> <br>Pick the one that you find
-            more convenient!
+            / Arrow keys to move the camera in a direction<br>- Edgepanning by moving
+            the mouse to the edges of the window<br> <br>Use the one that you find
+            more convenient! If edgepanning is frustrating, turn it off with the
+            button in the bottom right of the game.
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1420031991
