@@ -160,14 +160,14 @@ public class UnitSelector : MonoBehaviour
 
     private void Select(GameObject selectedObject)
     {
-        if(CurrentSelectedObject != null)
+        if(CurrentSelectedObject != null && (CurrentSelectedObject.GetComponent<Worker>() != null || CurrentSelectedObject.GetComponent<Archer>() != null))
         {
             CurrentSelectedObject.GetComponent<MeshRenderer>().material = PreviousMaterial;
         }
 
         CurrentSelectedObject = selectedObject;
         
-        if(CurrentSelectedObject != null)
+        if(CurrentSelectedObject != null && (CurrentSelectedObject.GetComponent<Worker>() != null || CurrentSelectedObject.GetComponent<Archer>() != null))
         {
             PreviousMaterial = CurrentSelectedObject.GetComponent<MeshRenderer>().material;
             CurrentSelectedObject.GetComponent<MeshRenderer>().material = SelectedMaterial;
