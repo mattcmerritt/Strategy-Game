@@ -16,6 +16,12 @@ public class Tower : Building
 
     public void SetGarrisonedUnit(GameObject unit)
     {
+        // prevent double garrisons
+        if (GarrisonedUnit != null)
+        {
+            return;
+        }
+
         GarrisonedUnit = unit;
         GroundPosition = unit.transform.position;
 
