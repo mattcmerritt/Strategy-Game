@@ -15,7 +15,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private GameObject EnemyPrefab;
     [SerializeField] private TerrainGeneration Map;
 
-    [SerializeField] private int enemyBase = 2;
+    // [SerializeField] private int enemyBase = 2;
     [SerializeField] private int waveNumber = 0;
 
     // Setting up singleton
