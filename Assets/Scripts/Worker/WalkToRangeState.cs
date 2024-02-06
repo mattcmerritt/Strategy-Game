@@ -17,7 +17,7 @@ public class WalkToRangeState : AgentState
     {
         // if nothing is left, return home
         Debug.Log("WORKER: Started to walk towards " + Range.gameObject.name);
-        agent.GetNavAgent().SetDestination(Range.transform.position);
+        agent.GetNavAgent().SetDestination(Range.GetComponent<Collider>().ClosestPoint(agent.transform.position));
     }
 
     public override void Update(Agent agent)

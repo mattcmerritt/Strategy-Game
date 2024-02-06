@@ -25,7 +25,7 @@ public class WalkToResourceState : AgentState
         if (Resource != null)
         {
             Debug.Log("WORKER: Started to walk towards " + Resource.gameObject.name);
-            agent.GetNavAgent().SetDestination(Resource.transform.position);
+            agent.GetNavAgent().SetDestination(Resource.GetComponent<Collider>().ClosestPoint(agent.transform.position));
         }
     }
 
