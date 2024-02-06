@@ -58,6 +58,12 @@ public class UnitSelector : MonoBehaviour
                         WalkToRangeState assignedTask = new WalkToRangeState(hit.collider.gameObject.GetComponent<ArcheryRange>());
                         worker.ChangeState(assignedTask);
                     }
+                    // Garrison in tower if clicked
+                    else if (hit.collider.gameObject.GetComponent<Tower>() != null)
+                    {
+                        WalkToTowerState assignedTask = new WalkToTowerState(hit.collider.gameObject.GetComponent<Tower>());
+                        worker.ChangeState(assignedTask);
+                    }
                     // If nothing interesting was hit, move to position clicked
                     else
                     {
@@ -111,6 +117,12 @@ public class UnitSelector : MonoBehaviour
                         ArcherAttackState assignedTask = new ArcherAttackState();
                         archer.ChangeState(assignedTask);
                     }
+                    // Garrison in tower if clicked
+                    else if (hit.collider.gameObject.GetComponent<Tower>() != null)
+                    {
+                        WalkToTowerState assignedTask = new WalkToTowerState(hit.collider.gameObject.GetComponent<Tower>());
+                        archer.ChangeState(assignedTask);
+                    }
                     // If nothing interesting was hit, move to position clicked
                     else
                     {
@@ -147,6 +159,10 @@ public class UnitSelector : MonoBehaviour
                     Select(hit.collider.gameObject);
                 }
                 else if (hit.collider.gameObject.GetComponent<ArcheryRange>() != null)
+                {
+                    Select(hit.collider.gameObject);
+                }
+                else if (hit.collider.gameObject.GetComponent<Tower>() != null)
                 {
                     Select(hit.collider.gameObject);
                 }

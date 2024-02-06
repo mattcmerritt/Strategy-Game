@@ -25,8 +25,8 @@ public class TerrainGeneration : MonoBehaviour
 
     // Building information
     [SerializeField] private float villageBuildingRadius; // determines how far out the buildings can be placed
-    [SerializeField] private int numBuildings, numRanges; // number of buildings to place on the map
-    [SerializeField] private GameObject buildingPrefab, rangePrefab; // generic building to place
+    [SerializeField] private int numBuildings, numRanges, numTowers; // number of buildings to place on the map
+    [SerializeField] private GameObject buildingPrefab, rangePrefab, towerPrefab; // generic building to place
 
     // Floor layer
     [SerializeField] private LayerMask floorLayer; // layer to ignore with box overlap
@@ -51,8 +51,8 @@ public class TerrainGeneration : MonoBehaviour
     private float CenterGap = 3f; // gap in the center of the map to let units spaw
 
     // Bounds and other objects necessary for placing objects
-    private Bounds BuildingBound, RangeBound, TreeBound, BushBound;
-    private Vector3[] BuildingCorners, RangeCorners, TreeCorners, BushCorners;
+    private Bounds BuildingBound, RangeBound, TowerBound, TreeBound, BushBound;
+    private Vector3[] BuildingCorners, RangeCorners, TowerCorners, TreeCorners, BushCorners;
 
     private void Start()
     {
@@ -174,6 +174,31 @@ public class TerrainGeneration : MonoBehaviour
         for (int i = 0; i < numRanges; i++)
         {
             SpawnRange();
+        }
+
+        // --- TOWERS ---
+        // Placing the ranges onto the terrain
+        GameObject tempTower = Instantiate(towerPrefab, new Vector3(-100f, -100f, -100f), Quaternion.identity);
+        // need to grab the bounds of the building from a copy of the prefab
+        BoxCollider towerCollider = tempTower.GetComponent<BoxCollider>();
+        // cannot grab the values if it is not instantiated
+        TowerBound = towerCollider.bounds;
+
+        // finding distances to all four corners of a building
+        TowerCorners = new Vector3[] {
+            new Vector3(TowerBound.extents.x, 0f, TowerBound.extents.z),
+            new Vector3(-TowerBound.extents.x, 0f, -TowerBound.extents.z),
+            new Vector3(-TowerBound.extents.x, 0f, TowerBound.extents.z),
+            new Vector3(TowerBound.extents.x, 0f, -TowerBound.extents.z),
+        };
+
+        // Debug.Log($"max: {bound.max}, min: {bound.min}, extents: {bound.extents}");
+        DestroyImmediate(tempTower); // remove from game once data is collected
+
+        // placing the buildings
+        for (int i = 0; i < numTowers; i++)
+        {
+            SpawnTower();
         }
 
         // --- TREES ---
@@ -420,7 +445,49 @@ public class TerrainGeneration : MonoBehaviour
             }
         }
     }
-    
+
+    public void SpawnTower()
+    {
+        bool placed = false;
+        while (!placed)
+        {
+            // calculate where to put the building
+            Vector3 direction = Vector3.Normalize(Random.Range(-1f, 1f) * Vector3.right + Random.Range(-1f, 1f) * Vector3.forward);
+            Vector3 displacement = direction * Random.Range(CenterGap, villageBuildingRadius);
+
+            Vector3 mapCenter = transform.position + (Vector3.right * width * squareSize / 2) + (Vector3.forward * depth * squareSize / 2);
+            Vector3 gridTarget = mapCenter + displacement; // location to attempt placing a house, less the vertical component
+
+            // find corners of the objects model to check height
+            float minimumHeight = (heightLayers + 1) * layerHeight;
+            foreach (Vector3 corner in TowerCorners)
+            {
+                // raycast down from the sky above the corners of the building to determine if it needs to be lower in the ground
+                Physics.Raycast((heightLayers + 1) * layerHeight * Vector3.up + gridTarget + corner, Vector3.down, out RaycastHit hit, (heightLayers + 1) * layerHeight, floorLayer);
+                // Instantiate(markerPrefab, gridTarget + corner + hit.point.y * Vector3.up, Quaternion.identity); // place debug markers
+                if (hit.point.y <= minimumHeight)
+                {
+                    minimumHeight = hit.point.y;
+                }
+            }
+            // apply height to target location
+            Vector3 target = gridTarget + (minimumHeight + TowerBound.extents.y) * Vector3.up;
+
+            // checking if the building location is valid
+            Collider[] blockingColliders = new Collider[10];
+
+            // if nothing is blocking the building, place it down at the height of its lowest corner
+            if (Physics.OverlapBoxNonAlloc(target, towerPrefab.transform.localScale / 2, blockingColliders, Quaternion.identity, ~floorLayer, QueryTriggerInteraction.Ignore) == 0)
+            {
+                // locations.Add(target);
+                // extents.Add(buildingPrefab.transform.localScale / 2);
+
+                Instantiate(towerPrefab, target, Quaternion.identity);
+                placed = true;
+            }
+        }
+    }
+
     public void SpawnTree(bool inVillage)
     {
         bool placed = false;

@@ -46,6 +46,7 @@ public class UI : MonoBehaviour
             Archer a = selected.GetComponent<Archer>();
             House h = selected.GetComponent<House>();
             ArcheryRange ar = selected.GetComponent<ArcheryRange>();
+            Tower t = selected.GetComponent<Tower>();
 
             if (w != null)
             {
@@ -75,6 +76,16 @@ public class UI : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     ar.CreateArcher();
+                }
+            }
+            else if (t != null)
+            {
+                UnitTitle.text = "Tower";
+                UnitDetails.text = "Can protect a single unit in the garrison. Press space to release the garrisoned unit.";
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    t.ReleaseGarrisonedUnit();
                 }
             }
         }
