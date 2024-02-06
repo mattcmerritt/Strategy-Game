@@ -1441,12 +1441,12 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Buildings can be selected just like units, and will create
-            units for a price if you press space.<br> <br>Houses can create workers
-            for 30 food, and archery ranges can create archers for 30 food, 10 wood.<br>
-            <br>Workers can turn into archers for 10 wood at an archery range, and
-            archers can turn into workers for free at a house.<br> <br>Manage your
-            population efficiently to grow your village!<br>
+          m_StringArgument: Buildings can be selected just like units, and support
+            your units.<br> <br>Houses can create workers for 30 food, and archery
+            ranges can create archers for 30 food, 10 wood.<br> <br>Workers can turn
+            into archers for 10 wood at an archery range, and archers can turn into
+            workers for free at a house.<br> <br>Protect your units by garrisoning
+            them in towers when they are in danger.<br>
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &663278004
