@@ -42,7 +42,8 @@ public class UnitSelector : MonoBehaviour
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~DetectLayer))
+                // can only perform actions if not garrisoned
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~DetectLayer) && !worker.CheckIsSafe())
                 {
                     // If a resource was clicked, start gathering resources
                     if(hit.collider.gameObject.GetComponent<ResourceSource>() != null)
@@ -64,7 +65,7 @@ public class UnitSelector : MonoBehaviour
                         WalkToTowerState assignedTask = new WalkToTowerState(hit.collider.gameObject.GetComponent<Tower>());
                         worker.ChangeState(assignedTask);
                     }
-                    // If nothing interesting was hit, move to position clicked
+                    // If nothing interesting was hit, move to position clicked if not garrisoned
                     else
                     {
                         Vector3 newHome = new Vector3(hit.point.x, worker.transform.position.y, hit.point.z);
@@ -101,7 +102,8 @@ public class UnitSelector : MonoBehaviour
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~DetectLayer))
+                // can only perform actions if not garrisoned
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~DetectLayer) && !archer.CheckIsSafe())
                 {
                     // Turn archer into an worker if the house was clicked
                     if(hit.collider.gameObject.GetComponent<House>() != null)
@@ -124,7 +126,7 @@ public class UnitSelector : MonoBehaviour
                         archer.ChangeState(assignedTask);
                     }
                     // If nothing interesting was hit, move to position clicked
-                    else
+                    else 
                     {
                         Vector3 newPos = new Vector3(hit.point.x, archer.transform.position.y, hit.point.z);
                         archer.SetNewPosition(newPos);

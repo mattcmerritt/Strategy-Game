@@ -177,6 +177,12 @@ public class Worker : Agent
 
     public void TakeDamage()
     {
+        // invincible if in tower
+        if (IsSafe)
+        {
+            return;
+        }
+
         // Take damage, check if dead, drop the logs, and return to the building
         CurrentHealth--;
         ChangeState(new WorkerReturnToHomeState());

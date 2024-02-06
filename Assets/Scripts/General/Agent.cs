@@ -9,6 +9,8 @@ public class Agent : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent NavAgent;
     protected AgentState ActiveState;
+    
+    protected bool IsSafe; // used to check if garrisoned
 
     // Helper method to retrieve the NavAgent component
     public NavMeshAgent GetNavAgent()
@@ -59,5 +61,16 @@ public class Agent : MonoBehaviour
         {
             ActiveState.OnTriggerEnter(this, other);
         }
+    }
+
+    // Controls invincibility
+    public void SetSafe(bool value)
+    {
+        IsSafe = value;
+    }
+
+    public bool CheckIsSafe()
+    {
+        return IsSafe;
     }
 }

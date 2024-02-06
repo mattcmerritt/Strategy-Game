@@ -34,6 +34,9 @@ public class Tower : Building
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
+        // activate invincibility
+        GarrisonedUnit.GetComponent<Agent>().SetSafe(true);
+
         // force unit to idle by disabling nav agent temporarily
         GarrisonedUnit.GetComponent<NavMeshAgent>().enabled = false;
     }
@@ -49,7 +52,10 @@ public class Tower : Building
             prev.transform.position = GroundPosition;
 
             // restore any agency to the unit
-            prev.GetComponent<NavMeshAgent>().enabled = true; 
+            prev.GetComponent<NavMeshAgent>().enabled = true;
+
+            // deactivate invincibility
+            prev.GetComponent<Agent>().SetSafe(false);
         }
 
         return prev;

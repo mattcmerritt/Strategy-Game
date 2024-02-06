@@ -20,6 +20,12 @@ public class Archer : Agent
 
     public void TakeDamage()
     {
+        // invincible if in tower
+        if (IsSafe)
+        {
+            return;
+        }
+
         // Take damage, check if dead
         CurrentHealth--;
         if(CurrentHealth <= 0)
